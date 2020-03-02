@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:background="@color/white"
+    android:layout_alignParentBottom="true"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        >
+        <ImageView
+            android:id="@+id/home_icon_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginRight="40dp"
+            android:src="@drawable/home_icon_unactive"
+            />
+
+        <ImageView
+            android:id="@+id/schedule_icon_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginRight="40dp"
+            android:src="@drawable/schedule_icon_unactive"
+            />
+
+        <ImageView
+            android:id="@+id/hair_icon_button"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="40dp"
+            android:src="@drawable/hair_icon_unactive"
+            />
+
+        <ImageView
+            android:id="@+id/user_icon_buttin"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/user_icon_unactive"
+            />
+
+    </LinearLayout>
+</RelativeLayout>

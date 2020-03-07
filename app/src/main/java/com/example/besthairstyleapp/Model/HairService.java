@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HairService {
-    private String[] hairStylist ;
+    private String[] hairStylist ={"Tony","John","David","yoyo"};
 
-    private String[] dataList;
+    private String[] dataList={"21-2-2020","21-1-2020","12-10-2020","21-9-2020"};
 
-    private int[] hairImg;
+    private int[] hairImg={R.id.plusicon,R.id.plusicon,R.id.plusicon,R.id.plusicon};
 
     private String spendTime;
 
@@ -24,10 +24,17 @@ public class HairService {
 
     private String[] name;
 
+    private int[] userIcon={R.drawable.hair_health_icon,R.drawable.hair_health_icon,R.drawable.hair_health_icon,R.drawable.hair_health_icon};
+
+    private String[] postHairNewsTime={"11:40","11:50","12:50","12:23"};
+
     private String[] dataStoreHairName = {"Hair cutting","Hair coloring","Hair shampoo","Hair perm","Hair Package","Hair health"};
 
     private int[] dataStoreHairImg = {R.drawable.hair_cutting_icon,R.drawable.hair_coloring,R.drawable.hair_shampoo_icon,R.drawable.hair_perm_icon,R.drawable.hair_package_icon,R.drawable.hair_health_icon};
 
+    private String[] countryStyle ={"Korea style","Americal style","China Style"};
+
+    private String postNewYear[]={"2018","2017","2016"};
 
     public HairService(String[] hairStylist,String[] dataList,String spendTime,int[] price,int[] postID,String[] name,int[] hairImg){
         this.hairStylist=hairStylist;
@@ -41,12 +48,13 @@ public class HairService {
     public HairService(){
 
     }
-    public String[] dataStoreHairName() {
-        return this.dataStoreHairName;
+
+    public int[] getdataStoreHairImg() {
+        return this.dataStoreHairImg;
     }
 
-    public int[] dataStoreHairImg() {
-        return this.dataStoreHairImg;
+    public String[] getdataStoreHairName() {
+        return this.dataStoreHairName;
     }
 
     public String[] getHairStylist() {
@@ -105,5 +113,29 @@ public class HairService {
         this.name = name;
     }
 
+    public String[] getCountryStyle(){ return countryStyle; }
+
+    public void setCountryStyle(String[] name) {
+        this.countryStyle = countryStyle;
+    }
+
+    public String[] getpostNewYear(){ return postNewYear; }
+
+    public void setpostNewYear(String[] postNewYear) {
+        this.postNewYear = postNewYear;
+    }
+
+    public int[] getUserIcon(){ return userIcon; }
+
+    public void setUserIcon(int[] userIcon) {
+        this.userIcon = userIcon;
+    }
+
+    public String[] getpostHairNewsTime(){ return this.postHairNewsTime; }
+
+    public void setpostHairNewsTime(String[] postHairNewsTime) {
+        this.postHairNewsTime = postHairNewsTime;
+
+    }
 
 }

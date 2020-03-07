@@ -19,35 +19,82 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     int postNewUserIcon[];
     String postNewuserName[];
     String postNewsTime[];
-    int plusicon[];
+    int HairImg[];
+    String[] countryStyle ;
+    String postNewYear[];
+    int layout;
+    int getCountNumber;
 
-    public RecycleViewAdapter(Context context,int postNewUserIcon[],String postNewuserName[],String postNewsTime[],int plusicon[]){
+    public RecycleViewAdapter(){
+
+    }
+
+    public RecycleViewAdapter(int layout,Context context,int postNewUserIcon[],String postNewuserName[],String postNewsTime[],int HairImg[]){
         this.context=context;
         this.postNewUserIcon=postNewUserIcon;
         this.postNewuserName=postNewuserName;
         this.postNewsTime= postNewsTime;
-        this.plusicon=plusicon;
+        this.HairImg=HairImg;
+        this.layout=layout;
     }
 
+    public RecycleViewAdapter(int layout , Context context, String[] countryStyle, String postNewYear[]){
+        this.context=context;
+        this.countryStyle=countryStyle;
+        this.postNewYear=postNewYear;
+        this.layout=layout;
+    }
+
+
+    public RecycleViewAdapter(int layout , Context context, String[] postNewYear){
+        this.layout=layout;
+        this.context=context;
+        this.postNewYear=postNewYear;
+    }
+
+
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        View itemView = LayoutInflater.from(context).inflate(R.layout.post_informantion_layout,viewGroup,false);
+        View itemView = LayoutInflater.from(context).inflate(this.layout,viewGroup,false);
 
         return new MyViewHolder(itemView);
-
-
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.postNewUserName.setText(postNewuserName[position]);
-        holder.postNewUsericon.setImageResource(postNewUserIcon[position]);
-        holder.postNewTime.setText(postNewsTime[position]);
+        switch (layout){
+            case R.layout.post_informantion_layout:
+                holder.postNewUserName.setText(postNewuserName [position]);
+                holder.postNewUsericon.setImageResource(postNewUserIcon[position]);
+                holder.postNewTime.setText(postNewsTime[position]);
+            break;
+
+            case R.layout.fliter_list_view:
+                holder.fliter_item.setText(countryStyle[position]);
+            break;
+
+            case R.layout.fliter_year_list_view:
+
+                holder.fliter_year_item.setText(postNewYear[position]);
+                break;
+        }
 
     }
 
     @Override
     public int getItemCount() {
-        return postNewuserName.length;
+        switch (layout){
+            case R.layout.post_informantion_layout:
+                this.getCountNumber=postNewuserName.length;
+            break;
+            case R.layout.fliter_list_view:
+               this.getCountNumber=countryStyle.length;
+                break;
+            case R.layout.fliter_year_list_view:
+                this.getCountNumber=postNewYear.length;
+                break;
+
+        }
+        return this.getCountNumber;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -56,7 +103,8 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         TextView postNewTime;
         ImageView plusIcon;
         ImageView postHairImage;
-
+        TextView fliter_item;
+        TextView fliter_year_item;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             postNewUsericon =(ImageView)itemView.findViewById(R.id.postNewUserIcon);
@@ -64,6 +112,8 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
             postNewTime =(TextView) itemView.findViewById(R.id.postNewsTime);
             plusIcon =(ImageView) itemView.findViewById(R.id.plusicon);
             postHairImage =(ImageView) itemView.findViewById(R.id.postHairImage);
+            fliter_item=(TextView)itemView.findViewById(R.id.fliter_item);
+            fliter_year_item=(TextView)itemView.findViewById(R.id.fliter_year_item);
 
         }
     }

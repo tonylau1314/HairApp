@@ -20,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
     ImageView userIconBtn;
     private BaseAdapter adapter;
     private static final int COLUMNS = 2;
+    private String[] dataStoreHairName = {"Hair cutting","Hair coloring","Hair shampoo","Hair perm","Hair Package","Hair health"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,9 +36,11 @@ public class MainActivity extends AppCompatActivity {
     public void initializeGridview() {
         GridView grid = (GridView) findViewById(R.id.grid);
         HairService hairServiceTypeModel = new HairService();
-        adapter = new GridAdapter(this,hairServiceTypeModel.dataStoreHairName(), hairServiceTypeModel.dataStoreHairImg());
+
+        adapter = new GridAdapter(this,dataStoreHairName, hairServiceTypeModel.getdataStoreHairImg());
         grid.setAdapter(adapter);
         grid.setNumColumns(COLUMNS);
     }
+
 
 }

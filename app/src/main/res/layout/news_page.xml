@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <include layout="@layout/header">
+
+        </include>
+
+        <include layout="@layout/filter_recycle_view">
+
+        </include>
+
+        <include layout="@layout/filter_year_recycle_view"
+
+            >
+
+        </include>
+        </RelativeLayout>
+
+
+        <include layout="@layout/recycle_view"></include>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <include layout="@layout/nav_bar"></include>
+    </RelativeLayout>
+</LinearLayout>

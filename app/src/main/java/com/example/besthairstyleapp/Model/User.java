@@ -21,6 +21,8 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class User extends Dbsetting {
     int password;
@@ -61,7 +63,8 @@ public class User extends Dbsetting {
     Map<String,Object> userAllInformantion ;
 
     String emailExitOrNot;
-    
+
+
     public User() {
 
     }
@@ -132,11 +135,24 @@ public class User extends Dbsetting {
 
     public void register(int password, String email, String accountName){
         CheckEmailExitOrNot(email);
-        if(this.emailExitOrNot =="this email not exit"){
-            userInsertSelfInformantion(password,email,accountName);
+
+        if(isEmailValid(email)==true){
+            if(this.emailExitOrNot =="this email not exit"){
+                userInsertSelfInformantion(password,email,accountName);
+            }else {
+                this.getEmailOrNotStatment();
+            }
         }else {
-            this.getEmailOrNotStatment();
+            String errorMesssage ="your form is wrong";
         }
+
+    }
+
+    public static boolean isEmailValid(String email) {
+        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 
     public void setEmailOrNotStatment(String emailExitOrNot) {

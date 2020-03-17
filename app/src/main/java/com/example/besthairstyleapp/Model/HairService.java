@@ -10,31 +10,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HairService {
-    private String[] hairStylist ={"Tony","John","David","yoyo"};
+        private String[] hairStylist ={"Tony","John","David","yoyo"};
 
-    private String[] dataList={"21-2-2020","21-1-2020","12-10-2020","21-9-2020"};
+        private String[] dataList={"21-2-2020","21-1-2020","12-10-2020","21-9-2020"};
 
-    private int[] hairImg={R.id.plusicon,R.id.plusicon,R.id.plusicon,R.id.plusicon};
+        private int[] hairImg={R.id.plusicon,R.id.plusicon,R.id.plusicon,R.id.plusicon};
 
-    private String spendTime;
+        private String spendTime;
 
-    private int[] price;
+        private int[] price;
 
-    private int[] postID;
+        private int[] postID;
 
-    private String[] name;
+        private String[] name;
 
-    private int[] userIcon={R.drawable.hair_health_icon,R.drawable.hair_health_icon,R.drawable.hair_health_icon,R.drawable.hair_health_icon};
+        private int[] userIcon={R.drawable.hair_health_icon,R.drawable.hair_health_icon,R.drawable.hair_health_icon,R.drawable.hair_health_icon};
 
-    private String[] postHairNewsTime={"11:40","11:50","12:50","12:23"};
+        private String[] postHairNewsTime={"11:40","11:50","12:50","12:23"};
 
-    private String[] dataStoreHairName = {"Hair cutting","Hair coloring","Hair shampoo","Hair perm","Hair Package","Hair health"};
+        private String[] dataStoreHairName = {"Hair cutting","Hair coloring","Hair shampoo","Hair perm","Hair Package","Hair health"};
 
-    private int[] dataStoreHairImg = {R.drawable.hair_cutting_icon,R.drawable.hair_coloring,R.drawable.hair_shampoo_icon,R.drawable.hair_perm_icon,R.drawable.hair_package_icon,R.drawable.hair_health_icon};
+        private int[] dataStoreHairImg = {R.drawable.hair_cutting_icon,R.drawable.hair_coloring,R.drawable.hair_shampoo_icon,R.drawable.hair_perm_icon,R.drawable.hair_package_icon,R.drawable.hair_health_icon};
 
-    private String[] countryStyle ={"Korea style","Americal style","China Style"};
+        private String[] countryStyle ={"Korea style","Americal style","China Style"};
 
-    private String postNewYear[]={"2018","2017","2016"};
+        private String postNewYear[]={"2018","2017","2016"};
 
     public HairService(String[] hairStylist,String[] dataList,String spendTime,int[] price,int[] postID,String[] name,int[] hairImg){
         this.hairStylist=hairStylist;

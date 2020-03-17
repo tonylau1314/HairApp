@@ -1,27 +1,73 @@
 package com.example.besthairstyleapp.Model;
 
-public class User {
-    String user;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.example.besthairstyleapp.Dbsetting.Dbsetting;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class User extends Dbsetting {
     int password;
+
     String email;
+
     String accountName;
+
     int userIcon;
 
-    public User(String user, int password, String email, String accountName, int userIcon) {
-        this.user = user;
-        this.password = password;
-        this.email = email;
-        this.accountName = accountName;
-        this.userIcon = userIcon;
+    String allUserInformantion;
+
+    private CollectionReference userCollection;
+
+
+    Map<String,Object> userMap= new HashMap<>();
+
+    final String CollectionName="User";
+
+    final String passwordTitle= "Password";
+
+    final String finalEmailTitle= "Email";
+
+    final String finalaccountNameTitle= "AccountName";
+
+    final String finalUserIconTitle= "UserIcon";
+
+    String querySuccessOrfail;
+
+    String queryTitle ;
+
+    String queryDescription ;
+
+    Map<String,Object> userAllInformantion ;
+
+    String emailExitOrNot;
+    public User() {
+
     }
 
-    public String getUser() {
-        return user;
+    public void userInsertSelfInformantion(int password, String email, String accountName){
+
+        userMap.put(this.passwordTitle,password);
+
+        userMap.put(this.finalEmailTitle,email);
+
+        userMap.put(this.finalaccountNameTitle,accountName);
+
+        db.collection(CollectionName).document(this.finalEmailTitle).set(userMap);
     }
 
-    public void setUser(String user) {
-        this.user = user;
-    }
 
     public int getPassword() {
         return password;
@@ -55,13 +101,59 @@ public class User {
         this.userIcon = userIcon;
     }
 
-    public void checkPasswordAndEmail(String email,int password){
-        if (this.password==password||email.equals(accountName)){
-
-        }else {
-
+    public void register(int password, String email, String accountName){
+        CheckEmailExitOrNot(email);
+        if(this.emailExitOrNot =="this email not exit"){
+            userInsertSelfInformantion(password,email,accountName);
         }
     }
 
+    public void setEmailOrNotStatment(String emailExitOrNot) {
+        this.emailExitOrNot = emailExitOrNot;
+    }
+    public void CheckEmailExitOrNot(String email){
+      db.collection(CollectionName).document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+          @Override
+          public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+              User user= new User();
+              String emailExitOrNot;
+              if (task.isSuccessful()) {
+                  DocumentSnapshot document = task.getResult();
+                  if (document.exists()) {
+                      emailExitOrNot="this email exit";
 
+                     user.setEmailOrNotStatment(emailExitOrNot);
+
+                  } else {
+                      emailExitOrNot="this email not exit";
+                      user.setEmailOrNotStatment(emailExitOrNot);
+
+                  }
+              } else {
+                      emailExitOrNot="errror";
+                  user.setEmailOrNotStatment(emailExitOrNot);
+
+              }
+          }
+      });
+    }
+
+    public void getUserAllInformantion(){
+        db.collection(CollectionName).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                User user=new User();
+                if (task.isSuccessful()) {
+                    System.out.println(task);
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        System.out.println("Tony"+document.getData());
+
+                    }
+                } else {
+                    Log.d("Error", "Error getting documents: ", task.getException());
+                }
+            }
+        });
+
+    }
 }

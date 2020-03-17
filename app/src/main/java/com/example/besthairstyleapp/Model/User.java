@@ -183,7 +183,7 @@ public class User extends Dbsetting {
 
                   }
               } else {
-                      emailExitOrNot="errror";
+                      emailExitOrNot="error";
                   user.setEmailOrNotStatment(emailExitOrNot);
 
               }
@@ -209,7 +209,7 @@ public class User extends Dbsetting {
                                 }
                             }
                         }
-                        System.out.println("Tony"+document.getData());
+                        System.out.println(document.getData());
                     }
                 } else {
                     Log.d("Error", "Error getting documents: ", task.getException());

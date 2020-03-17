@@ -15,6 +15,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,6 +47,10 @@ public class User extends Dbsetting {
     final String finalaccountNameTitle= "AccountName";
 
     final String finalUserIconTitle= "UserIcon";
+
+    private ArrayList<String> allUserInformantionArraylist;
+
+    JSONArray jArray;
 
     String querySuccessOrfail;
 
@@ -101,6 +109,15 @@ public class User extends Dbsetting {
         this.userIcon = userIcon;
     }
 
+
+    public ArrayList<String> getAllUserInformantionArraylist() {
+        return this.allUserInformantionArraylist;
+    }
+
+    public void setAllUserInformantionArraylist (ArrayList<String> allUserInformantionArraylist) {
+        this.allUserInformantionArraylist = allUserInformantionArraylist;
+    }
+
     public void register(int password, String email, String accountName){
         CheckEmailExitOrNot(email);
         if(this.emailExitOrNot =="this email not exit"){
@@ -111,6 +128,7 @@ public class User extends Dbsetting {
     public void setEmailOrNotStatment(String emailExitOrNot) {
         this.emailExitOrNot = emailExitOrNot;
     }
+
     public void CheckEmailExitOrNot(String email){
       db.collection(CollectionName).document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
           @Override
@@ -146,8 +164,17 @@ public class User extends Dbsetting {
                 if (task.isSuccessful()) {
                     System.out.println(task);
                     for (QueryDocumentSnapshot document : task.getResult()) {
+                        if (jArray != null) {
+                            for (int i=0;i<jArray.length();i++){
+                                user.getAllUserInformantionArraylist();
+                                try {
+                                    allUserInformantionArraylist.add(jArray.getString(i));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
                         System.out.println("Tony"+document.getData());
-
                     }
                 } else {
                     Log.d("Error", "Error getting documents: ", task.getException());

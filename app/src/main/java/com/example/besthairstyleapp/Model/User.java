@@ -61,6 +61,7 @@ public class User extends Dbsetting {
     Map<String,Object> userAllInformantion ;
 
     String emailExitOrNot;
+    
     public User() {
 
     }
@@ -118,16 +119,34 @@ public class User extends Dbsetting {
         this.allUserInformantionArraylist = allUserInformantionArraylist;
     }
 
+    public void editInformantion(int password, String email, String accountName){
+
+        userMap.put(this.passwordTitle,password);
+
+        userMap.put(this.finalEmailTitle,email);
+
+        userMap.put(this.finalaccountNameTitle,accountName);
+
+        db.collection(CollectionName).document(email).update(userMap);
+    }
+
     public void register(int password, String email, String accountName){
         CheckEmailExitOrNot(email);
         if(this.emailExitOrNot =="this email not exit"){
             userInsertSelfInformantion(password,email,accountName);
+        }else {
+            this.getEmailOrNotStatment();
         }
     }
 
     public void setEmailOrNotStatment(String emailExitOrNot) {
         this.emailExitOrNot = emailExitOrNot;
     }
+
+    public String getEmailOrNotStatment() {
+        return  this.emailExitOrNot;
+    }
+
 
     public void CheckEmailExitOrNot(String email){
       db.collection(CollectionName).document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

@@ -6,11 +6,8 @@ import androidx.annotation.NonNull;
 
 import com.example.besthairstyleapp.Dbsetting.Dbsetting;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -25,11 +22,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class User extends Dbsetting {
-    int password;
+    private String password;
 
-    String email;
+    private String strPassword;
 
-    String accountName;
+    private String email;
+
+    private String accountName;
 
     int userIcon;
 
@@ -64,12 +63,17 @@ public class User extends Dbsetting {
 
     String emailExitOrNot;
 
+    private Boolean passwordAndEmailCorrectorNot;
+
+    public User(String email,String password) {
+        this.email=email;
+        this.password=password;
+    }
 
     public User() {
 
     }
-
-    public void userInsertSelfInformantion(int password, String email, String accountName){
+    public void userInsertSelfInformantion(String password, String email, String accountName){
 
         userMap.put(this.passwordTitle,password);
 
@@ -81,11 +85,29 @@ public class User extends Dbsetting {
     }
 
 
-    public int getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(int password) {
+    public String getstrPassword() {
+        return strPassword;
+    }
+
+
+    public void setpasswordAndEmailCorrectorNot(Boolean passwordAndEmailCorrectorNot) {
+        this.passwordAndEmailCorrectorNot=passwordAndEmailCorrectorNot;
+    }
+
+    public Boolean getpasswordAndEmailCorrectorNot() {
+        return this.passwordAndEmailCorrectorNot;
+    }
+
+
+    public void setstrPassword(String password) {
+        this.strPassword=password;
+    }
+
+    public void setPassword(String password) {
         this.password = password;
     }
 
@@ -133,7 +155,7 @@ public class User extends Dbsetting {
         db.collection(CollectionName).document(email).update(userMap);
     }
 
-    public void register(int password, String email, String accountName){
+    public void register(String password, String email, String accountName){
         CheckEmailExitOrNot(email);
 
         if(isEmailValid(email)==true){
@@ -143,7 +165,7 @@ public class User extends Dbsetting {
                 this.getEmailOrNotStatment();
             }
         }else {
-            String errorMesssage ="your form is wrong";
+            String errorMesssage ="this is not an email";
         }
 
     }
@@ -160,35 +182,84 @@ public class User extends Dbsetting {
     }
 
     public String getEmailOrNotStatment() {
-        return  this.emailExitOrNot;
+        return this.emailExitOrNot;
     }
 
+    public void login(String password,String email){
+        final User user= new User();
+        user.setEmail(email);
+        user.setPassword(password);
+        db.collection(CollectionName).document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
 
-    public void CheckEmailExitOrNot(String email){
-      db.collection(CollectionName).document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            public void onComplete(@NonNull Task<DocumentSnapshot> task)  {
+                String getemail;
+                String getpassword;
+                try {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+
+                    user.userMap=document.getData();
+
+                    getemail=user.userMap.get("Email").toString();
+
+                    getpassword=user.userMap.get("Password").toString();
+
+                    if(user.getEmail().equals(getemail)||user.getPassword().equals(getpassword)){
+                        System.out.println("tony correctly");
+                        user.setpasswordAndEmailCorrectorNot(true);
+                    }
+                     else {
+                        System.out.println("your password is not correctly");
+                        user.setpasswordAndEmailCorrectorNot(false);
+                    }
+                }
+                    } catch(NullPointerException e) {
+                    user.setpasswordAndEmailCorrectorNot(false);
+                }
+            }
+        });
+    }
+
+    public void checkPasswordAndEmail(String email, int password){
+
+    }
+
+    public String CheckEmailExitOrNot(String email){
+        db.collection(CollectionName).document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
           @Override
           public void onComplete(@NonNull Task<DocumentSnapshot> task) {
               User user= new User();
+
               String emailExitOrNot;
+
               if (task.isSuccessful()) {
+
                   DocumentSnapshot document = task.getResult();
+
+                  user.userMap=document.getData();
+
                   if (document.exists()) {
                       emailExitOrNot="this email exit";
 
-                     user.setEmailOrNotStatment(emailExitOrNot);
-
-                  } else {
-                      emailExitOrNot="this email not exit";
                       user.setEmailOrNotStatment(emailExitOrNot);
 
+                      String getpassword=user.userMap.get("Password").toString();
+
+                      user.setPassword(getpassword);
+                  } else {
+                      emailExitOrNot="this email not exit";
+
+                      user.setEmailOrNotStatment(emailExitOrNot);
                   }
               } else {
                       emailExitOrNot="error";
-                  user.setEmailOrNotStatment(emailExitOrNot);
+
+                      user.setEmailOrNotStatment(emailExitOrNot);
 
               }
           }
       });
+        return getPassword();
     }
 
     public void getUserAllInformantion(){

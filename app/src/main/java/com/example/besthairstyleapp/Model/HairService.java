@@ -2,12 +2,7 @@ package com.example.besthairstyleapp.Model;
 
 
 
-import android.graphics.drawable.Drawable;
-
 import com.example.besthairstyleapp.R;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class HairService {
         private String[] hairStylist ={"Tony","John","David","yoyo"};
@@ -135,7 +130,7 @@ public class HairService {
 
     public void setpostHairNewsTime(String[] postHairNewsTime) {
         this.postHairNewsTime = postHairNewsTime;
-
     }
+
 
 }

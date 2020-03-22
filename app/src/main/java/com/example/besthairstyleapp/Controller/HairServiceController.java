@@ -33,7 +33,6 @@ public class HairServiceController {
         this.RecycleViewAdapter=RecycleViewAdapter;
         this.context=context;
         this.layout=layout;
-
     }
 
     public int[] getHairServiceHairImg() {

@@ -106,16 +106,12 @@ public class UserController {
     }
 
     public void checkUserAccountPassword(String password,String email){
-        model.login(password,email);
+       model.login(password,email);
     }
 
     public void forgetPassword(Context mContext, String mEmail){
+
         model.CheckEmailExitOrNot(mEmail);
-
-        String password=model.getEmailOrNotStatment();
-
-        System.out.println("Tony check"+password);
-
         String errorMessage="this email exit";
 
         if(errorMessage.equals(model.getEmailOrNotStatment())){

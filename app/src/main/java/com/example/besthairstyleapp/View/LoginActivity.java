@@ -1,5 +1,7 @@
 package com.example.besthairstyleapp.View;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -23,7 +25,7 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
         TextView register;
         String emailText, passwordText;
         UserController userController;
-
+    ProgressDialog mProgressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,20 +56,53 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
             return;
 
         }else{
-             UserController userController =new UserController();
-             userController.checkUserAccountPassword(this.passwordText,this.emailText);
+              this.userController =new UserController();
 
-             if(userController.getuserModelpasswordAndEmailCorrectorNot()){
-                 SharedPreferences pref = getSharedPreferences("User", MODE_PRIVATE);
-                 pref.edit().putString("password", this.passwordText).commit();
-                 pref.edit().putString("email", this.emailText).commit();
-             }
+              checkDataArraivedOrNot();
+
+              this.userController.checkUserAccountPassword(this.passwordText,this.emailText);
 
         }
     }
+    public void checkDataArraivedOrNot(){
 
+        Thread t1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(userController.getuserModelpasswordAndEmailCorrectorNot()==null){
+                    while (userController.getuserModelpasswordAndEmailCorrectorNot()==null ) {
+                        System.out.println("tony"+userController.getuserModelpasswordAndEmailCorrectorNot());
+                    }
+                }
 
+                System.out.println("finalllyHelp"+userController.getuserModelpasswordAndEmailCorrectorNot());
 
+                userloginCorrect(userController.getuserModelpasswordAndEmailCorrectorNot());
+            }
+        });
+        t1.start();
+    }
+
+    public void userloginCorrect(Boolean correctOrNot){
+        if(correctOrNot.equals(true)){
+            rememberUserAccount();
+            changeMainPage();
+        }
+    }
+
+    public void rememberUserAccount(){
+        SharedPreferences pref = getSharedPreferences("User", MODE_PRIVATE);
+
+        pref.edit().putString("password", this.passwordText).commit();
+
+        pref.edit().putString("email", this.emailText).commit();
+    }
+
+    public void changeMainPage(){
+        System.out.println("arrived");
+        Intent intent =new Intent(this, MainActivity.class);
+        LoginActivity.this.startActivity(intent);
+    }
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.loginBtn:

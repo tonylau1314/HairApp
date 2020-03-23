@@ -186,48 +186,55 @@ public class User extends Dbsetting {
     }
 
     public void login(String password,String email){
-        final User user= new User();
-        user.setEmail(email);
-        user.setPassword(password);
-        db.collection(CollectionName).document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+         setEmail(email);
+
+         setPassword(password);
+
+         db.collection(CollectionName).document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
 
             public void onComplete(@NonNull Task<DocumentSnapshot> task)  {
                 String getemail;
+
                 String getpassword;
+                System.out.println("Getsomething");
                 try {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
 
-                    user.userMap=document.getData();
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
 
-                    getemail=user.userMap.get("Email").toString();
+                        userMap=document.getData();
 
-                    getpassword=user.userMap.get("Password").toString();
+                        getemail=userMap.get("Email").toString();
 
-                    if(user.getEmail().equals(getemail)||user.getPassword().equals(getpassword)){
-                        System.out.println("tony correctly");
-                        user.setpasswordAndEmailCorrectorNot(true);
+                        getpassword=userMap.get("Password").toString();
+
+
+                        if(getEmail().equals(getemail)||getPassword().equals(getpassword)){
+                            setpasswordAndEmailCorrectorNot(true);
+
+                        }
+                         else {
+                             setpasswordAndEmailCorrectorNot(false);
+                        }
                     }
-                     else {
-                        System.out.println("your password is not correctly");
-                        user.setpasswordAndEmailCorrectorNot(false);
+                        else {
+
                     }
-                }
                     } catch(NullPointerException e) {
-                    user.setpasswordAndEmailCorrectorNot(false);
+                        setpasswordAndEmailCorrectorNot(false);
                 }
             }
+
         });
     }
 
-    public void checkPasswordAndEmail(String email, int password){
 
-    }
-
-    public String CheckEmailExitOrNot(String email){
+    public void CheckEmailExitOrNot(String email){
         db.collection(CollectionName).document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
           @Override
           public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+              String getpassword;
+
               User user= new User();
 
               String emailExitOrNot;
@@ -243,9 +250,10 @@ public class User extends Dbsetting {
 
                       user.setEmailOrNotStatment(emailExitOrNot);
 
-                      String getpassword=user.userMap.get("Password").toString();
+                      getpassword=user.userMap.get("Password").toString();
 
                       user.setPassword(getpassword);
+
                   } else {
                       emailExitOrNot="this email not exit";
 
@@ -259,7 +267,6 @@ public class User extends Dbsetting {
               }
           }
       });
-        return getPassword();
     }
 
     public void getUserAllInformantion(){

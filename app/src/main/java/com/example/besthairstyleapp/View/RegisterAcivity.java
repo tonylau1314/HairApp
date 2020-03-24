@@ -30,6 +30,7 @@ public class RegisterAcivity extends AppCompatActivity implements View.OnClickLi
 
 
     }
+
     public void initializeview() {
         firstname =(EditText) findViewById(R.id.firstname);
         lastname =(EditText) findViewById(R.id.lastname);
@@ -38,6 +39,7 @@ public class RegisterAcivity extends AppCompatActivity implements View.OnClickLi
         registerBtn = (Button)findViewById(R.id.registerBtn);
 
     }
+
     public void initializeviewSetListener(){
 
         registerBtn.setOnClickListener(this);

@@ -43,12 +43,14 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
         register = (TextView)findViewById(R.id.register);
 
     }
+
     public void initializeviewSetListener(){
         loginBtn.setOnClickListener(this);
         forgetpassword.setOnClickListener(this);
         register.setOnClickListener(this);
 
     }
+
     public void checkEmptyOrNot(EditText view,String input, String errorMessage){
         if (input.isEmpty()){
 
@@ -67,6 +69,7 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
 
         }
     }
+
     public void checkDataArraivedOrNot(){
 
         Thread t1 = new Thread(new Runnable() {

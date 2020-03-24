@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.example.besthairstyleapp.Model.User;
+import com.example.besthairstyleapp.View.ForgetPasswordActivity;
 import com.example.besthairstyleapp.View.LoginActivity;
 import com.example.besthairstyleapp.libClass.JavaMailAPI;
 
@@ -15,7 +16,7 @@ public class UserController {
     Context context;
     int layout;
     public Activity activity;
-
+    ForgetPasswordActivity forgetPasswordActivity;
 
     public UserController(){
          this.model=new User();
@@ -112,15 +113,34 @@ public class UserController {
     public void forgetPassword(Context mContext, String mEmail){
 
         model.CheckEmailExitOrNot(mEmail);
+        checkPasswordDataArraivedOrNot();
+    }
+    public void checkPasswordDataArraivedOrNot(){
+
+        Thread t1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                while (getUserModelPassword()== null) {
+                    System.out.println("check"+getUserModelPassword());
+
+                }
+                System.out.println("arrived");
+
+                checkEmailExitOrNot();
+            }
+        });
+        t1.start();
+    }
+    public void checkEmailExitOrNot(){
         String errorMessage="this email exit";
         String password= getUserModelPassword();
         if(errorMessage.equals(model.getEmailExitOrNotExitStatment())){
-            JavaMailAPI javaMailAPI=new JavaMailAPI(mContext,"hairproject1234@gmail.com","Forget password",getUserModelPassword());
-
+            System.out.println("finalCheck");
+            JavaMailAPI javaMailAPI=new JavaMailAPI(forgetPasswordActivity.getContext(),"hairproject1234@gmail.com","Forget password",password);
             javaMailAPI.execute();
         }else {
             getUserModelEmailOrNotStatment();
         }
     }
-
 }

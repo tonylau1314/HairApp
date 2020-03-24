@@ -1,5 +1,6 @@
 package com.example.besthairstyleapp.View;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,16 +14,22 @@ import com.example.besthairstyleapp.R;
 public class ForgetPasswordActivity extends AppCompatActivity implements View.OnClickListener{
     EditText forgetpasswordEmail;
     Button Sendbtn;
+    private static Context instance;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgetpassword);
         initializeview();
         initializeviewSetListener();
+        instance = this;
+
     }
+
     public void initializeview() {
         forgetpasswordEmail = (EditText) findViewById(R.id.Email);
         Sendbtn = (Button) findViewById(R.id.Sendbtn);
     }
+
     public void initializeviewSetListener(){
         Sendbtn.setOnClickListener(this);
     }
@@ -32,5 +39,9 @@ public class ForgetPasswordActivity extends AppCompatActivity implements View.On
         UserController userController = new UserController();
         String mail=forgetpasswordEmail.getText().toString().trim();
         userController.forgetPassword(this,mail);
+    }
+
+    public static Context getContext(){
+        return instance;
     }
 }

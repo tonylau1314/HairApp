@@ -51,16 +51,19 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
     }
     public void checkEmptyOrNot(EditText view,String input, String errorMessage){
         if (input.isEmpty()){
-            view.setError(errorMessage);
-            view.requestFocus();
-            return;
 
+            view.setError(errorMessage);
+
+            view.requestFocus();
+
+            return;
         }else{
               this.userController =new UserController();
 
+              this.userController.checkUserAccountPassword(this.passwordText,this.emailText);
+
               checkDataArraivedOrNot();
 
-              this.userController.checkUserAccountPassword(this.passwordText,this.emailText);
 
         }
     }
@@ -69,10 +72,9 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
         Thread t1 = new Thread(new Runnable() {
             @Override
             public void run() {
-                if(userController.getuserModelpasswordAndEmailCorrectorNot()==null){
-                    while (userController.getuserModelpasswordAndEmailCorrectorNot()==null ) {
-                        System.out.println("tony"+userController.getuserModelpasswordAndEmailCorrectorNot());
-                    }
+
+                while (userController.getuserModelpasswordAndEmailCorrectorNot()==null ) {
+                    System.out.println("tony"+userController.getuserModelpasswordAndEmailCorrectorNot());
                 }
 
                 System.out.println("finalllyHelp"+userController.getuserModelpasswordAndEmailCorrectorNot());
@@ -103,6 +105,7 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
         Intent intent =new Intent(this, MainActivity.class);
         LoginActivity.this.startActivity(intent);
     }
+
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.loginBtn:
@@ -113,11 +116,13 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
 
                 break;
             case R.id.forgetpassword:
-
+                Intent forgetpasswordintent =new Intent(this, ForgetPasswordActivity.class);
+                LoginActivity.this.startActivity(forgetpasswordintent);
 
                 break;
             case R.id.register:
-
+                Intent registerintent =new Intent(this, RegisterAcivity.class);
+                LoginActivity.this.startActivity(registerintent);
                 break;
         }
 

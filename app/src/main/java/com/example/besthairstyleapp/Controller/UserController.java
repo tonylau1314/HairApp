@@ -85,11 +85,11 @@ public class UserController {
     }
 
     public void setUserModelEmailOrNotStatment(String emailExitOrNot) {
-        model.setEmailOrNotStatment(emailExitOrNot);
+        model.setEmailExitOrNotExitStatment(emailExitOrNot);
     }
 
     public String getUserModelEmailOrNotStatment() {
-        return model.getEmailOrNotStatment();
+        return model.getEmailExitOrNotExitStatment();
     }
 
 
@@ -113,8 +113,8 @@ public class UserController {
 
         model.CheckEmailExitOrNot(mEmail);
         String errorMessage="this email exit";
-
-        if(errorMessage.equals(model.getEmailOrNotStatment())){
+        String password= getUserModelPassword();
+        if(errorMessage.equals(model.getEmailExitOrNotExitStatment())){
             JavaMailAPI javaMailAPI=new JavaMailAPI(mContext,"hairproject1234@gmail.com","Forget password",getUserModelPassword());
 
             javaMailAPI.execute();
@@ -122,4 +122,5 @@ public class UserController {
             getUserModelEmailOrNotStatment();
         }
     }
+
 }

@@ -74,14 +74,16 @@ public class User extends Dbsetting {
 
     }
     public void userInsertSelfInformantion(String password, String email, String accountName){
+            userMap= new HashMap<>();
 
-        userMap.put(this.passwordTitle,password);
+            userMap.put(this.passwordTitle,password);   //crash problem
 
-        userMap.put(this.finalEmailTitle,email);
+            userMap.put(this.finalEmailTitle,email);
 
-        userMap.put(this.finalaccountNameTitle,accountName);
+            userMap.put(this.finalaccountNameTitle,accountName);
 
-        db.collection(CollectionName).document(this.finalEmailTitle).set(userMap);
+            db.collection(CollectionName).document(email).set(userMap);
+
     }
 
 
@@ -156,18 +158,41 @@ public class User extends Dbsetting {
     }
 
     public void register(String password, String email, String accountName){
+        setPassword(password);
+        setEmail(email);
+        setAccountName(accountName);
         CheckEmailExitOrNot(email);
+        checkRegisterDataArraivedOrNot();
+    }
 
+    public void CheckEmailValidAndEmailExitOrNot(String email){
         if(isEmailValid(email)==true){
             if(this.emailExitOrNot =="this email not exit"){
-                userInsertSelfInformantion(password,email,accountName);
+
+                userInsertSelfInformantion(getPassword(),getEmail(),getAccountName());
             }else {
-                this.getEmailOrNotStatment();
+                String errorMesssage ="this is not an email";
             }
         }else {
-            String errorMesssage ="this is not an email";
+            String errorMesssage ="this is not input wrong";
         }
+    }
 
+    public void checkRegisterDataArraivedOrNot(){
+
+        Thread t1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                while (getEmailExitOrNotExitStatment()== null) {
+                    System.out.println("WhatIs"+getEmailExitOrNotExitStatment());
+
+                }
+                System.out.println("fuck"+getEmailExitOrNotExitStatment());
+                CheckEmailValidAndEmailExitOrNot(getEmail());
+            }
+        });
+        t1.start();
     }
 
     public static boolean isEmailValid(String email) {
@@ -177,11 +202,11 @@ public class User extends Dbsetting {
         return matcher.matches();
     }
 
-    public void setEmailOrNotStatment(String emailExitOrNot) {
+    public void setEmailExitOrNotExitStatment(String emailExitOrNot) {
         this.emailExitOrNot = emailExitOrNot;
     }
 
-    public String getEmailOrNotStatment() {
+    public String getEmailExitOrNotExitStatment() {
         return this.emailExitOrNot;
     }
 
@@ -235,38 +260,47 @@ public class User extends Dbsetting {
           public void onComplete(@NonNull Task<DocumentSnapshot> task) {
               String getpassword;
 
-              User user= new User();
-
               String emailExitOrNot;
 
+              System.out.println("step1");
+
               if (task.isSuccessful()) {
+                  System.out.println("step2");
 
                   DocumentSnapshot document = task.getResult();
 
-                  user.userMap=document.getData();
+                  User.this.userMap=document.getData();
 
                   if (document.exists()) {
+                      System.out.println("step3");
+
                       emailExitOrNot="this email exit";
 
-                      user.setEmailOrNotStatment(emailExitOrNot);
+                      User.this.setEmailExitOrNotExitStatment(emailExitOrNot);
 
-                      getpassword=user.userMap.get("Password").toString();
+                      getpassword=User.this.userMap.get("Password").toString();
 
-                      user.setPassword(getpassword);
+                      User.this.setPassword(getpassword);
 
                   } else {
                       emailExitOrNot="this email not exit";
 
-                      user.setEmailOrNotStatment(emailExitOrNot);
+                      System.out.println("step4");
+
+                      User.this.setEmailExitOrNotExitStatment(emailExitOrNot);
                   }
               } else {
-                      emailExitOrNot="error";
+                      emailExitOrNot="this email not exit";
+                  System.out.println("step5");
 
-                      user.setEmailOrNotStatment(emailExitOrNot);
+
+                  User.this.setEmailExitOrNotExitStatment(emailExitOrNot);
 
               }
           }
       });
+        System.out.println("step6");
+
     }
 
     public void getUserAllInformantion(){

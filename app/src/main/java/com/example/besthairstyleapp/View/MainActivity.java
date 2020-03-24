@@ -1,11 +1,11 @@
 package com.example.besthairstyleapp.View;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.besthairstyleapp.Adapter.GridAdapter;
 import com.example.besthairstyleapp.Model.HairService;
@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
     public void initializeGridview() {
         GridView grid = (GridView) findViewById(R.id.grid);
         HairService hairServiceTypeModel = new HairService();
-
         adapter = new GridAdapter(this,dataStoreHairName, hairServiceTypeModel.getdataStoreHairImg());
         grid.setAdapter(adapter);
         grid.setNumColumns(COLUMNS);

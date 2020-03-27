@@ -12,7 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.besthairstyleapp.R;
 
-public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.MyViewHolder>{
+import java.util.List;
+
+public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.MyViewHolder>  implements View.OnClickListener{
     @NonNull
 
     private Context context;
@@ -24,6 +26,13 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     String postNewYear[];
     int layout;
     int getCountNumber;
+    int onClickNumber;
+
+    private List<String> names;
+
+    String filterYearTitle;
+
+    String hairStyleTitle;
 
     public RecycleViewAdapter(){
 
@@ -60,21 +69,37 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
         switch (layout){
             case R.layout.post_informantion_layout:
                 holder.postNewUserName.setText(postNewuserName [position]);
                 holder.postNewUsericon.setImageResource(postNewUserIcon[position]);
                 holder.postNewTime.setText(postNewsTime[position]);
+
+                holder.postNewUserName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    System.out.println("check"+position);
+                }
+            });
+
             break;
 
             case R.layout.fliter_list_view:
                 holder.fliter_item.setText(countryStyle[position]);
+
             break;
 
             case R.layout.fliter_year_list_view:
 
                 holder.fliter_year_item.setText(postNewYear[position]);
+
+                holder.fliter_year_item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setOnClickNumber(position);
+                }
+            });
                 break;
         }
 
@@ -88,6 +113,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
             break;
             case R.layout.fliter_list_view:
                this.getCountNumber=countryStyle.length;
+
                 break;
             case R.layout.fliter_year_list_view:
                 this.getCountNumber=postNewYear.length;
@@ -95,6 +121,53 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
         }
         return this.getCountNumber;
+    }
+
+    public void setOnClickNumber(int onClickNumber){
+        this.onClickNumber=onClickNumber;
+    }
+
+    public int getOnClickNumber(){
+        return this.onClickNumber;
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.fliter_year_item:
+                checkWhichFilterYearbtnClicked();
+        }
+    }
+    public void checkWhichFilterYearbtnClicked(){
+        switch (getOnClickNumber()){
+            case 0:
+                this.filterYearTitle = "2018";
+            break;
+
+            case 1:
+                this.filterYearTitle = "2017";
+            break;
+
+            case 2:
+                this.filterYearTitle = "2016";
+                break;
+        }
+    }
+
+    public void checkWhichStylebtnClicked(){
+        switch (getOnClickNumber()){
+            case 0:
+                this.hairStyleTitle="Korea style";
+            break;
+
+            case 1:
+                this.hairStyleTitle="Americal style";
+            break;
+
+            case 2:
+                this.hairStyleTitle="China style";
+            break;
+        }
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -105,6 +178,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         ImageView postHairImage;
         TextView fliter_item;
         TextView fliter_year_item;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             postNewUsericon =(ImageView)itemView.findViewById(R.id.postNewUserIcon);
@@ -116,5 +190,10 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
             fliter_year_item=(TextView)itemView.findViewById(R.id.fliter_year_item);
 
         }
+
+
     }
+
+
+
 }

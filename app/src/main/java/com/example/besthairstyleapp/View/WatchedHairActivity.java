@@ -1,7 +1,7 @@
 package com.example.besthairstyleapp.View;
 
 import android.os.Bundle;
-import android.widget.Button;
+import android.widget.SearchView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,14 +9,10 @@ import com.example.besthairstyleapp.Controller.HairServiceController;
 import com.example.besthairstyleapp.Model.HairService;
 import com.example.besthairstyleapp.Model.User;
 import com.example.besthairstyleapp.R;
-
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
-import java.util.Map;
 
-
-public class WatchedHairActivity extends AppCompatActivity {
+public class WatchedHairActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     HairService HairService;
     HairServiceController HairServiceController;
@@ -30,6 +26,7 @@ public class WatchedHairActivity extends AppCompatActivity {
         displayCountryStyleFliter();
         displayNews();
         displayYearFliter();
+
     }
     public void displayNews(){
         HairService = new HairService();
@@ -46,5 +43,15 @@ public class WatchedHairActivity extends AppCompatActivity {
         HairService = new HairService();
         HairServiceController = new HairServiceController(this, HairService, this, this);
         HairServiceController.displayYeayFilter();
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
     }
 }

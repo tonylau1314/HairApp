@@ -76,7 +76,7 @@ public class User extends Dbsetting {
     public void userInsertSelfInformantion(String password, String email, String accountName){
             userMap= new HashMap<>();
 
-            userMap.put(this.passwordTitle,password);   //crash problem
+            userMap.put(this.passwordTitle,password);
 
             userMap.put(this.finalEmailTitle,email);
 

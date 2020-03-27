@@ -139,7 +139,6 @@ public class HairServiceController {
         recycleview.setLayoutManager(new LinearLayoutManager(this.context, RecyclerView.HORIZONTAL, false));
     }
 
-
     public void displayNews(){
         RecyclerView recycleview =(RecyclerView)this.activity.findViewById(R.id.recycle_view);
         RecycleViewAdapter recycleViewAdapter = new RecycleViewAdapter(R.layout.post_informantion_layout,this.context,getHairServiceUserIcon(),getHairServiceStylist(),getHairServicePostNewsTime(),getHairServiceHairImg());

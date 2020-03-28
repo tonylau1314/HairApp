@@ -80,7 +80,6 @@ public class RegisterAcivity extends AppCompatActivity implements View.OnClickLi
             return;
 
         }else{
-            System.out.println("asd.net");
 
             this.userController =new UserController();
 

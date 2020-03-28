@@ -8,13 +8,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.besthairstyleapp.Model.Filterlist;
 import com.example.besthairstyleapp.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.MyViewHolder>  implements View.OnClickListener{
+public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.MyViewHolder>  implements View.OnClickListener {
     @NonNull
 
     private Context context;
@@ -27,12 +30,12 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     int layout;
     int getCountNumber;
     int onClickNumber;
-
-    private List<String> names;
-
     String filterYearTitle;
-
     String hairStyleTitle;
+
+    List<String> dataSource;
+    ArrayList<String> bbc;
+    ArrayList<String> postuserNameList;
 
     public RecycleViewAdapter(){
 
@@ -61,6 +64,31 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         this.postNewYear=postNewYear;
     }
 
+    public void inserData(List<String> insertList){
+      //  postuserNameList = new ArrayList<>();
+         bbc=new ArrayList<String>();//Creating arraylist
+        bbc.add("Ravi");//Adding object in arraylist
+        bbc.add("Vijay");
+        bbc.add("Ravi");
+        bbc.add("Ajay");
+    //    for (int i = 0; i < postNewuserName.length; i++) {
+     //       postuserNameList.add(postNewuserName[i]);
+      //  }
+        Filterlist filterlist=new Filterlist(bbc,insertList);
+        DiffUtil.DiffResult diffResult=DiffUtil.calculateDiff(filterlist);
+
+        bbc.addAll(insertList);
+        diffResult.dispatchUpdatesTo(this);
+    }
+
+    public void updateData(List<String> newList){
+        Filterlist filterlist=new Filterlist(postuserNameList,newList);
+        DiffUtil.DiffResult diffResult=DiffUtil.calculateDiff(filterlist);
+
+        postuserNameList.clear();
+        postuserNameList.addAll(newList);
+        diffResult.dispatchUpdatesTo(this);
+    }
 
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         View itemView = LayoutInflater.from(context).inflate(this.layout,viewGroup,false);
@@ -76,12 +104,6 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
                 holder.postNewUsericon.setImageResource(postNewUserIcon[position]);
                 holder.postNewTime.setText(postNewsTime[position]);
 
-                holder.postNewUserName.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    System.out.println("check"+position);
-                }
-            });
 
             break;
 
@@ -97,10 +119,15 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
                 holder.fliter_year_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    setOnClickNumber(position);
+                    ArrayList<String> list=new ArrayList<String>();//Creating arraylist
+                    list.add("Ravi");//Adding object in arraylist
+                    list.add("Vijay");
+                    list.add("Ravi");
+                    list.add("Ajay");
+                    inserData(list);
+                     setOnClickNumber(position);
                 }
             });
-                break;
         }
 
     }
@@ -131,13 +158,23 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         return this.onClickNumber;
     }
 
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.fliter_year_item:
                 checkWhichFilterYearbtnClicked();
+
+                break;
+
+            case R.id.fliter_item:
+                checkWhichStylebtnClicked();
+
+                break;
+
         }
     }
+
     public void checkWhichFilterYearbtnClicked(){
         switch (getOnClickNumber()){
             case 0:
@@ -169,6 +206,10 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
             break;
         }
     }
+
+
+
+
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView postNewUsericon;

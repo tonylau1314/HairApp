@@ -28,6 +28,14 @@ public class UploadImageActivity extends AppCompatActivity implements View.OnCli
     Button uploadBtn;
     Button chooseBtn;
     EditText chooseImageImageName;
+    EditText countryStyle;
+    EditText email;
+    EditText hairName;
+    EditText hairType;
+    EditText image;
+    EditText price;
+    EditText spendTime;
+
     ImageView chooseImageView;
     Uri mImageUri;
     private static final int PICK_IMAGE_REQUEST =1;
@@ -39,6 +47,7 @@ public class UploadImageActivity extends AppCompatActivity implements View.OnCli
         uploadBtn=findViewById(R.id.uploadimageBtn);
         chooseBtn=findViewById(R.id.ChooseFileBtn);
         chooseImageImageName=findViewById(R.id.imageNameEdit);
+
         chooseImageView=findViewById(R.id.chooseImageView);
 
         mStorageRef = FirebaseStorage.getInstance().getReference("upload/4315323.jpg");
@@ -87,13 +96,13 @@ public class UploadImageActivity extends AppCompatActivity implements View.OnCli
         MimeTypeMap mime=MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cr.getType(uri));
     }
-    public void uploadFile(){
+    private void uploadFile(){
         if (mImageUri!=null){
             StorageReference fileReference=mStorageRef.child(System.currentTimeMillis()+"."+getFileExtension(mImageUri));
             fileReference.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                
+
                     Upload upload=new Upload(chooseImageImageName.getText().toString().trim(),taskSnapshot.getMetadata().getReference().getDownloadUrl().toString());
 
                 }

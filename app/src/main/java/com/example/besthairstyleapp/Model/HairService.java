@@ -1,218 +1,251 @@
 package com.example.besthairstyleapp.Model;
 
 
+import android.content.ContentResolver;
+import android.content.Context;
+import android.net.Uri;
+import android.webkit.MimeTypeMap;
+
 import androidx.annotation.NonNull;
 
 import com.example.besthairstyleapp.Dbsetting.Dbsetting;
 import com.example.besthairstyleapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import org.json.JSONArray;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class HairService extends Dbsetting {
-        private String[] hairStylist ={"Tony","John","David","yoyo"};
 
-        private String[] dataList={"21-2-2020","21-1-2020","12-10-2020","21-9-2020"};
+    private String dataStoreHairName[] = {"Hair cutting", "Hair coloring", "Hair shampoo", "Hair perm", "Hair Package", "Hair health"};
 
-        private int[] hairImg={R.id.plusicon,R.id.plusicon,R.id.plusicon,R.id.plusicon};
+    private int[] dataStoreHairImg = {R.drawable.hair_cutting_icon,R.drawable.hair_coloring,R.drawable.hair_shampoo_icon,R.drawable.hair_perm_icon,R.drawable.hair_package_icon,R.drawable.hair_health_icon};
 
-        private String spendTime;
 
-        private int[] price;
+    private Map<String, Object> hairServiceMap = new HashMap<String, Object>();
 
-        private int[] postID;
+    private Map<String,Object> getDBbhairServiceMap= new HashMap<String, Object>();
 
-        private String[] name;
+    private Map<Integer, Map<String, Object>>hairCuttingMap = new HashMap<Integer,Map<String, Object>>();
 
-        private int[] userIcon={R.drawable.hair_health_icon,R.drawable.hair_health_icon,R.drawable.hair_health_icon,R.drawable.hair_health_icon};
+    private Map<Integer, Map<String, Object>>hairColoringMap = new HashMap<Integer,Map<String, Object>>();
 
-        private String[] postHairNewsTime={"11:40","11:50","12:50","12:23"};
+    private Map<Integer, Map<String, Object>>hairShampooMap = new HashMap<Integer,Map<String, Object>>();
 
-        private String[] dataStoreHairName = {"Hair cutting","Hair coloring","Hair shampoo","Hair perm","Hair Package","Hair health"};
+    private Map<Integer, Map<String, Object>>hairPermMap = new HashMap<Integer,Map<String, Object>>();
 
-        private int[] dataStoreHairImg = {R.drawable.hair_cutting_icon,R.drawable.hair_coloring,R.drawable.hair_shampoo_icon,R.drawable.hair_perm_icon,R.drawable.hair_package_icon,R.drawable.hair_health_icon};
+    private Map<Integer, Map<String, Object>>hairPackageMap = new HashMap<Integer,Map<String, Object>>();
 
-        private String[] countryStyle ={"Korea style","Americal style","China Style"};
 
-        private String postNewYear[]={"2018","2017","2016"};
 
-        Map<String,Object> hairServiceMap;
+    private int cuttingKeyCounter;
 
-        final String postIDTitle="PostID";
+    private int coloringKeyCounter;
 
-        final String emailTitle="Email";
+    private int hairShampooCounter;
 
-        final String hairNameTitle="Hair Name";
+    private int hairPermCounter;
 
-        final String dataTitle="Data";
+    private int hairPackageCounter;
 
-        final String imageTitle="Image";
+    private String gethairtype;
 
-        final String spendTimeTitle="Spend Time";
+    final String postIDTitle = "PostID";
 
-        final String priceTitle="Price";
+    final String emailTitle = "Email";
 
-        final String hairTypeTitle="Hair Type";
+    final String hairNameTitle = "Hair Name";
 
-        final String countryStyleTitle="Country Style";
+    final String dataTitle = "Data";
 
-        final String commentIDTitle="CommentID";
+    final String imageTitle = "Image";
 
-        final String collectionName="HairInformantion";
+    final String spendTimeTitle = "Spend Time";
 
-        private String postId;
+    final String priceTitle = "Price";
 
-        private int counter;
-    public HairService(String[] hairStylist,String[] dataList,String spendTime,int[] price,int[] postID,String[] name,int[] hairImg){
-        this.hairStylist=hairStylist;
-        this.dataList=dataList;
-        this.spendTime=spendTime;
-        this.price=price;
-        this.postID=postID;
-        this.name=name;
-        this.hairImg=hairImg;
+    final String hairTypeTitle = "Hair Type";
+
+    final String countryStyleTitle = "Country Style";
+
+    final String commentIDTitle = "CommentID";
+
+    final String collectionName = "HairInformantion";
+
+    final String yeartitle = "UpLoadYear";
+
+    final String monthTitle = "UpLoadMonth";
+
+    final String dayTitle = "UploadDay";
+
+    final String hourTitle = "UploadHours";
+
+    private String postId;
+
+    Uri mImageUri;
+
+    private int counter;
+
+    int month;
+
+    int year;
+
+    int day;
+
+    int hour;
+
+    private String userInputemail;
+
+    private String userInputhairName;
+
+    private String userInputdata;
+
+    private String userInputimage;
+
+    private String userInputspendTime;
+
+    private String userInputprice;
+
+    private String userInputhairtype;
+
+    private String userInputcountrystyle;
+
+    JSONArray jArray;
+
+    private String[] countryStyle ={"Korea style","Americal style","China Style"};
+
+    private String postNewYear[]={"2018","2017","2016"};
+
+
+    public HairService() {
     }
-    public HairService(){
 
-    }
+    public String[] getpostNewYear(){ return postNewYear; }
 
     public int[] getdataStoreHairImg() {
         return this.dataStoreHairImg;
     }
 
+    public String[] getCountryStyle(){ return countryStyle; }
+
+
     public String[] getdataStoreHairName() {
         return this.dataStoreHairName;
     }
 
-    public String[] getHairStylist() {
-        return hairStylist;
+
+
+    public int getCounter() {
+        return this.counter;
     }
-
-    public void setHairStylist(String[] hairStylist) {
-        this.hairStylist = hairStylist;
-    }
-
-    public String[] getDataList() {
-        return dataList;
-    }
-
-    public void setDataList(String[] dataList) {
-        this.dataList = dataList;
-    }
-
-    public int[] getHairImg() {
-        return hairImg;
-    }
-
-    public void setHairImg(int[] hairImg) {
-        this.hairImg = hairImg;
-    }
-
-    public String getSpendTime() {
-        return spendTime;
-    }
-
-    public void setSpendTime(String spendTime) {
-        this.spendTime = spendTime;
-    }
-
-    public int[] getPrice() {
-        return price;
-    }
-
-    public void setPrice(int[] price) {
-        this.price = price;
-    }
-
-    public int[] getPostID() {
-        return postID;
-    }
-
-    public void setPostID(int[] postID) {
-        this.postID = postID;
-    }
-
-    public String[] getName() {
-        return name;
-    }
-
-    public void setName(String[] name) {
-        this.name = name;
-    }
-
-    public String[] getCountryStyle(){ return countryStyle; }
-
-    public void setCountryStyle(String[] name) {
-        this.countryStyle = countryStyle;
-    }
-
-    public String[] getpostNewYear(){ return postNewYear; }
-
-    public void setpostNewYear(String[] postNewYear) {
-        this.postNewYear = postNewYear;
-    }
-
-    public int[] getUserIcon(){ return userIcon; }
-
-    public void setUserIcon(int[] userIcon) {
-        this.userIcon = userIcon;
-    }
-
-    public String[] getpostHairNewsTime(){ return this.postHairNewsTime; }
-
-    public void setpostHairNewsTime(String[] postHairNewsTime) {
-        this.postHairNewsTime = postHairNewsTime;
-    }
-
-    public int getCounter(){ return this.counter; }
 
     public void setCounter(int counter) {
         this.counter = counter;
     }
 
-    public void insertHairServiceInformantion(String email,String hairName, String data,String image,String spendTime,String price,String hairtype,String countrystyle){
+    public Map<Integer, Map<String, Object>> gethairCuttingMap(){
+
+        System.out.println("TonyCheck123"+this.hairCuttingMap);
+
+        return this.hairCuttingMap;
+    }
+
+    public Map<Integer, Map<String, Object>> gethairColoringMap(){
+        return this.hairColoringMap;
+    }
+
+
+    public Map<Integer, Map<String, Object>> gethairShampooMap(){
+        return this.hairShampooMap;
+    }
+
+    public Map<Integer, Map<String, Object>> gethairPermMap(){
+        return this.hairPermMap;
+    }
+
+
+    public Map<Integer, Map<String, Object>> gethairPackageMap(){
+        return this.hairPackageMap;
+    }
+
+    public  Map<String, Object>  gethairServiceMap(){
+        return this.hairServiceMap;
+    }
+
+    public void insertHairServiceInformantion() {
 
         updateID();
 
+        upLoadHairDate();
+
         hairServiceMap = new HashMap<>();
 
-        hairServiceMap.put(this.postIDTitle,getCounter());
+        //  uploadImage();
+        this.postId=String.valueOf(counter);
 
-        hairServiceMap.put(this.emailTitle,email);
+        hairServiceMap.put(this.postIDTitle, postId);
 
-        hairServiceMap.put(this.hairNameTitle,hairName);
+        hairServiceMap.put(this.emailTitle, this.userInputemail);
 
-        hairServiceMap.put(this.dataTitle,data);
+        hairServiceMap.put(this.hairNameTitle, this.userInputhairName);
 
-        hairServiceMap.put(this.imageTitle,image);
+        hairServiceMap.put(this.yeartitle, this.year);
 
-        hairServiceMap.put(this.spendTimeTitle,spendTime);
+        hairServiceMap.put(this.monthTitle, this.month);
 
-        hairServiceMap.put(this.priceTitle,price);
+        hairServiceMap.put(this.dayTitle, this.day);
 
-        hairServiceMap.put(this.hairTypeTitle,hairtype);
+        hairServiceMap.put(this.hourTitle, this.hour);
 
-        hairServiceMap.put(this.countryStyleTitle,countrystyle);
+        hairServiceMap.put(this.imageTitle, this.userInputimage);
 
-      //  hairServiceMap.put(this.commentIDTitle,c);
+        hairServiceMap.put(this.spendTimeTitle, this.userInputspendTime);
+
+        hairServiceMap.put(this.priceTitle, this.userInputprice);
+
+        hairServiceMap.put(this.hairTypeTitle,this.hairTypeTitle);
+
+        hairServiceMap.put(this.countryStyleTitle, this.userInputcountrystyle);
+
+        //  hairServiceMap.put(this.commentIDTitle,c);
 
         db.collection(collectionName).document(this.postId).set(hairServiceMap);
     }
 
-    public void updateID(){
+    public void uploadHairSerivceData(String email, String hairName, String data, String image, String spendTime, String price, String hairtype, String countrystyle){
+        userInputemail=email;
+        userInputhairName=hairName;
+        userInputimage=image;
+        userInputspendTime=spendTime;
+        userInputprice=price;
+        userInputhairtype=hairtype;
+        userInputcountrystyle=countrystyle;
+        updateID();
+        checkIDArraivedOrNot();
+    }
+
+
+    public void updateID() {
         db.collection(collectionName).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
+            @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     int count = 0;
                     for (DocumentSnapshot document : task.getResult()) {
                         count++;
+
                     }
                     setCounter(count);
                 } else {
@@ -222,8 +255,140 @@ public class HairService extends Dbsetting {
         });
     }
 
-    public void upLoadHairDate(){
-        Calendar calendar=Calendar.getInstance();
-        Date today =calendar.getTime();
+    private void upLoadHairDate() {
+        Calendar calendar = Calendar.getInstance();
+        year = calendar.get(Calendar.YEAR);
+        month = calendar.get(Calendar.MONTH) + 1; // Note: zero based!
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+        hour = calendar.get(Calendar.HOUR_OF_DAY);
     }
+
+    public void uploadImage(final String imageName,Uri mImageUri,Context context) {
+        if (mImageUri!=null){
+            StorageReference fileReference=mStorageRef.child(System.currentTimeMillis()+"."+getFileExtension(mImageUri,context));
+            fileReference.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                    Upload upload=new Upload(imageName,taskSnapshot.getMetadata().getReference().getDownloadUrl().toString());
+
+                }
+            })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                        }
+                    })
+
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+
+                        }
+                    });
+        }
+    }
+
+    private String getFileExtension(Uri uri, Context context){
+        ContentResolver cr=context.getContentResolver();
+        MimeTypeMap mime= MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(cr.getType(uri));
+    }
+
+    private void checkIDArraivedOrNot(){
+
+        Thread t1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                while (counter == 0) {
+
+                }
+                insertHairServiceInformantion();
+            }
+        });
+        t1.start();
+    }
+
+
+
+    public void getAllhairInformantion(){
+        db.collection(collectionName)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                try {
+                                    HairService.this.getDBbhairServiceMap = document.getData();
+
+                                    HairService.this.gethairtype = getDBbhairServiceMap.get("Email").toString();
+
+                                    System.out.println("check123123"+HairService.this.gethairtype);
+
+                                    typeFilter ();
+                                } catch(NullPointerException e) {
+
+                                }
+                            }
+                        } else {
+                        }
+                    }
+                });
+    }
+
+    public void DownloadAllhairInformantion(){
+        getAllhairInformantion();
+        checkDownloadSucceesfuleOrnot();
+    }
+
+    public void checkDownloadSucceesfuleOrnot(){
+
+        Thread t1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                while (hairCuttingMap.isEmpty()) {
+                    System.out.println("asdsdsnull");
+                }
+
+                gethairCuttingMap();
+            }
+        });
+        t1.start();
+    }
+
+
+    private void typeFilter (){
+        switch (HairService.this.gethairtype) {
+            case "Hair cutting":
+                hairCuttingMap.put(++cuttingKeyCounter,getDBbhairServiceMap);
+
+                System.out.println("typeFilter"+getDBbhairServiceMap);
+
+                break;
+
+            case "Hair coloring":
+                hairColoringMap.put(++coloringKeyCounter,getDBbhairServiceMap);
+                break;
+
+            case "Hair shampoo":
+                hairShampooMap.put(++hairShampooCounter,getDBbhairServiceMap);
+                break;
+
+            case "Hair perm":
+                hairPermMap.put(++hairPermCounter,getDBbhairServiceMap);
+                break;
+
+            case "Hair Package":
+                hairPackageMap.put(++hairPackageCounter,getDBbhairServiceMap);
+                break;
+        }
+    }
+
+
+
+
 }

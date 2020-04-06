@@ -8,14 +8,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.besthairstyleapp.Model.Filterlist;
+import com.example.besthairstyleapp.Controller.HairServiceController;
 import com.example.besthairstyleapp.R;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.MyViewHolder>  implements View.OnClickListener {
     @NonNull
@@ -34,61 +34,38 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     String hairStyleTitle;
 
     List<String> dataSource;
-    ArrayList<String> bbc;
-    ArrayList<String> postuserNameList;
 
+    HairServiceController hairServiceController;
+
+    Map<Integer,Map<String, Object>> postNews;
     public RecycleViewAdapter(){
 
     }
 
-    public RecycleViewAdapter(int layout,Context context,int postNewUserIcon[],String postNewuserName[],String postNewsTime[],int HairImg[]){
-        this.context=context;
-        this.postNewUserIcon=postNewUserIcon;
-        this.postNewuserName=postNewuserName;
-        this.postNewsTime= postNewsTime;
-        this.HairImg=HairImg;
-        this.layout=layout;
-    }
 
-    public RecycleViewAdapter(int layout , Context context, String[] countryStyle, String postNewYear[]){
+    public RecycleViewAdapter(int layout , Context context, String[] countryStyle,String country){
         this.context=context;
         this.countryStyle=countryStyle;
-        this.postNewYear=postNewYear;
         this.layout=layout;
     }
 
 
-    public RecycleViewAdapter(int layout , Context context, String[] postNewYear){
+   public RecycleViewAdapter(int layout , Context context, String[] postNewYear){
         this.layout=layout;
         this.context=context;
         this.postNewYear=postNewYear;
     }
 
-    public void inserData(List<String> insertList){
-      //  postuserNameList = new ArrayList<>();
-         bbc=new ArrayList<String>();//Creating arraylist
-        bbc.add("Ravi");//Adding object in arraylist
-        bbc.add("Vijay");
-        bbc.add("Ravi");
-        bbc.add("Ajay");
-    //    for (int i = 0; i < postNewuserName.length; i++) {
-     //       postuserNameList.add(postNewuserName[i]);
-      //  }
-        Filterlist filterlist=new Filterlist(bbc,insertList);
-        DiffUtil.DiffResult diffResult=DiffUtil.calculateDiff(filterlist);
 
-        bbc.addAll(insertList);
-        diffResult.dispatchUpdatesTo(this);
+
+    public RecycleViewAdapter(int layout , Context context, Map<Integer, Map<String, Object>> postNews){
+        this.layout=layout;
+        this.context=context;
+        this.postNews=postNews;
     }
 
-    public void updateData(List<String> newList){
-        Filterlist filterlist=new Filterlist(postuserNameList,newList);
-        DiffUtil.DiffResult diffResult=DiffUtil.calculateDiff(filterlist);
 
-        postuserNameList.clear();
-        postuserNameList.addAll(newList);
-        diffResult.dispatchUpdatesTo(this);
-    }
+
 
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         View itemView = LayoutInflater.from(context).inflate(this.layout,viewGroup,false);
@@ -100,16 +77,16 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
         switch (layout){
             case R.layout.post_informantion_layout:
-                holder.postNewUserName.setText(postNewuserName [position]);
-                holder.postNewUsericon.setImageResource(postNewUserIcon[position]);
-                holder.postNewTime.setText(postNewsTime[position]);
+                holder.postNewUserName.setText(postNews.get(position).get("Email").toString());
+                System.out.println("fastCheck"+postNews.get(position).get("Email").toString());
+           //     holder.postNewUsericon.setImageResource(postNewUserIcon[position]);
+            //    holder.postNewTime.setText(postNewsTime[position]);
 
 
             break;
 
             case R.layout.fliter_list_view:
                 holder.fliter_item.setText(countryStyle[position]);
-
             break;
 
             case R.layout.fliter_year_list_view:
@@ -119,12 +96,14 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
                 holder.fliter_year_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ArrayList<String> list=new ArrayList<String>();//Creating arraylist
-                    list.add("Ravi");//Adding object in arraylist
-                    list.add("Vijay");
-                    list.add("Ravi");
-                    list.add("Ajay");
-                    inserData(list);
+                    System.out.println("arrivedTony");
+
+                    String update[] = new String[10];
+                    for (int i=0; i<3; i++)
+                     update[i]=(UUID.randomUUID().toString());
+                    HairServiceController hairServiceController=new HairServiceController();
+
+        //            hairServiceController.updateData(update);
                      setOnClickNumber(position);
                 }
             });
@@ -137,7 +116,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         switch (layout){
             case R.layout.post_informantion_layout:
                 this.getCountNumber=postNewuserName.length;
-            break;
+             break;
             case R.layout.fliter_list_view:
                this.getCountNumber=countryStyle.length;
 

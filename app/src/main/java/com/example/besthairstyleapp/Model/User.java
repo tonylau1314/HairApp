@@ -53,13 +53,7 @@ public class User extends Dbsetting {
 
     JSONArray jArray;
 
-    String querySuccessOrfail;
 
-    String queryTitle ;
-
-    String queryDescription ;
-
-    Map<String,Object> userAllInformantion ;
 
     String emailExitOrNot;
 
@@ -91,9 +85,6 @@ public class User extends Dbsetting {
         return password;
     }
 
-    public String getstrPassword() {
-        return strPassword;
-    }
 
 
     public void setpasswordAndEmailCorrectorNot(Boolean passwordAndEmailCorrectorNot) {
@@ -105,9 +96,6 @@ public class User extends Dbsetting {
     }
 
 
-    public void setstrPassword(String password) {
-        this.strPassword=password;
-    }
 
     public void setPassword(String password) {
         this.password = password;
@@ -185,11 +173,9 @@ public class User extends Dbsetting {
             public void run() {
 
                 while (getEmailExitOrNotExitStatment()== null) {
-                    System.out.println("WhatIs"+getEmailExitOrNotExitStatment());
 
                 }
-                System.out.println("fuck"+getEmailExitOrNotExitStatment());
-                CheckEmailValidAndEmailExitOrNot(getEmail());
+                 CheckEmailValidAndEmailExitOrNot(getEmail());
             }
         });
         t1.start();
@@ -221,8 +207,7 @@ public class User extends Dbsetting {
                 String getemail;
 
                 String getpassword;
-                System.out.println("Getsomething");
-                try {
+                 try {
 
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
@@ -262,17 +247,14 @@ public class User extends Dbsetting {
 
               String emailExitOrNot;
 
-              System.out.println("step1");
 
               if (task.isSuccessful()) {
-                  System.out.println("step2");
 
                   DocumentSnapshot document = task.getResult();
 
                   User.this.userMap=document.getData();
 
                   if (document.exists()) {
-                      System.out.println("step3");
 
                       emailExitOrNot="this email exit";
 
@@ -285,21 +267,16 @@ public class User extends Dbsetting {
                   } else {
                       emailExitOrNot="this email not exit";
 
-                      System.out.println("step4");
-
                       User.this.setEmailExitOrNotExitStatment(emailExitOrNot);
                   }
               } else {
                       emailExitOrNot="this email not exit";
-                  System.out.println("step5");
-
 
                   User.this.setEmailExitOrNotExitStatment(emailExitOrNot);
 
               }
           }
       });
-        System.out.println("step6");
 
     }
 

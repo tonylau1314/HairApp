@@ -1,7 +1,6 @@
 package com.example.besthairstyleapp.Adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.besthairstyleapp.R;
-
-import static android.content.ContentValues.TAG;
 
 public class GridAdapter extends BaseAdapter {
     private Context context;
@@ -46,14 +43,11 @@ public class GridAdapter extends BaseAdapter {
         if (convertView == null) {
             final LayoutInflater layoutInflater = LayoutInflater.from(context);
             convertView = layoutInflater.inflate(R.layout.hair_type_icon_title, null);
-
             // 將grid_single 動態載入(image+text)
             final TextView textView = convertView.findViewById(R.id.hair_type_title);
             final ImageView imageView = convertView.findViewById(R.id.hair_type_icon);
             textView.setText(text[position]);
             imageView.setImageResource(imageId[position]);
-
-
 
 
         }

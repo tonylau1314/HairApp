@@ -1,8 +1,6 @@
 package com.example.besthairstyleapp.View;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.besthairstyleapp.Controller.HairServiceController;
 import com.example.besthairstyleapp.Controller.UserController;
 import com.example.besthairstyleapp.R;
 
@@ -21,17 +20,16 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
         EditText password;
         CheckBox rememberMe;
         Button loginBtn;
-        TextView forgetpassword;
-        TextView register;
+        TextView forgetpassword, register;
         String emailText, passwordText;
         UserController userController;
-    ProgressDialog mProgressDialog;
-    @Override
+        HairServiceController hairServiceController;
+      @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         initializeview();
-        initializeviewSetListener();
+         initializeviewSetListener();
     }
 
     public void initializeview() {
@@ -67,6 +65,7 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
               checkDataArraivedOrNot();
 
 
+
         }
     }
 
@@ -81,7 +80,6 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
                 }
 
                 System.out.println("finalllyHelp"+userController.getuserModelpasswordAndEmailCorrectorNot());
-
                 userloginCorrect(userController.getuserModelpasswordAndEmailCorrectorNot());
             }
         });
@@ -90,18 +88,10 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
 
     public void userloginCorrect(Boolean correctOrNot){
         if(correctOrNot.equals(true)){
-            rememberUserAccount();
-            changeMainPage();
+             changeMainPage();
         }
     }
 
-    public void rememberUserAccount(){
-        SharedPreferences pref = getSharedPreferences("User", MODE_PRIVATE);
-
-        pref.edit().putString("password", this.passwordText).commit();
-
-        pref.edit().putString("email", this.emailText).commit();
-    }
 
     public void changeMainPage(){
         System.out.println("arrived");
@@ -112,20 +102,18 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.loginBtn:
-                this.emailText= email.getText().toString().trim();
-                this.passwordText=  password.getText().toString().trim();
+                emailText = email.getText().toString().trim();
+                passwordText = password.getText().toString().trim();
                 checkEmptyOrNot(email,emailText,"Email is not inputted");
                 checkEmptyOrNot(password,passwordText,"Password is not inputted");
 
                 break;
             case R.id.forgetpassword:
-                Intent forgetpasswordintent =new Intent(this, ForgetPasswordActivity.class);
-                LoginActivity.this.startActivity(forgetpasswordintent);
+                this.startActivity(new Intent(this, ForgetPasswordActivity.class));
 
                 break;
             case R.id.register:
-                Intent registerintent =new Intent(this, RegisterAcivity.class);
-                LoginActivity.this.startActivity(registerintent);
+                startActivity(new Intent(this, RegisterAcivity.class));
                 break;
         }
 

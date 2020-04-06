@@ -1,44 +1,61 @@
 package com.example.besthairstyleapp.View;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.besthairstyleapp.Controller.HairServiceController;
 import com.example.besthairstyleapp.Model.HairService;
-import com.example.besthairstyleapp.Model.User;
 import com.example.besthairstyleapp.R;
-import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class WatchedHairActivity extends AppCompatActivity {
 
     HairService HairService;
     HairServiceController HairServiceController;
-    private FirebaseFirestore db=FirebaseFirestore.getInstance();
-    User user;
+    Intent intent;
+    int onclicknumber;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.news_page);
-        User user=new User();
-        user.getUserAllInformantion();
+        getIntents();
+        setInents();
         displayCountryStyleFliter();
-        displayNews();
         displayYearFliter();
+        displayNews();
 
     }
-    public void displayNews(){
+
+
+    private void getIntents(){
+        intent = getIntent();
+        HashMap<String, ArrayList<String>> hashMap = (HashMap<String, ArrayList<String>>) intent.getSerializableExtra("getHairCuttingMap");
+        System.out.println("check12312312"+hashMap);
+        onclicknumber = intent.getIntExtra("onclicknumber", 0);
+    }
+
+    private void setInents(){
+        HairServiceController = new HairServiceController();
+        HairServiceController.SetonclickTypenumber(this.onclicknumber);
+    }
+
+    private void displayNews(){
         HairService = new HairService();
         HairServiceController = new HairServiceController(this , this, this);
         HairServiceController.displayNews();
     }
-    public void displayCountryStyleFliter(){
+
+    private void displayCountryStyleFliter(){
         HairService = new HairService();
         HairServiceController = new HairServiceController(this , this, this);
         HairServiceController.displayStyleCountryFliter();
     }
 
-    public void displayYearFliter(){
+    private void displayYearFliter(){
         HairService = new HairService();
         HairServiceController = new HairServiceController(this , this, this);
         HairServiceController.displayYeayFilter();

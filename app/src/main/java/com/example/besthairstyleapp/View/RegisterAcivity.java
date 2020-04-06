@@ -31,7 +31,7 @@ public class RegisterAcivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
-    public void initializeview() {
+    private void initializeview() {
         firstname =(EditText) findViewById(R.id.firstname);
         lastname =(EditText) findViewById(R.id.lastname);
         email =(EditText) findViewById(R.id.email);
@@ -40,7 +40,7 @@ public class RegisterAcivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
-    public void initializeviewSetListener(){
+    private void initializeviewSetListener(){
 
         registerBtn.setOnClickListener(this);
 
@@ -70,7 +70,7 @@ public class RegisterAcivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-    public void checkEmptyOrNot(EditText view,String input, String errorMessage){
+    private void checkEmptyOrNot(EditText view,String input, String errorMessage){
         if (input.isEmpty()){
 
             view.setError(errorMessage);

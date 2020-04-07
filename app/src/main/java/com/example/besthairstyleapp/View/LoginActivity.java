@@ -24,12 +24,13 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
         String emailText, passwordText;
         UserController userController;
         HairServiceController hairServiceController;
-      @Override
+        Intent intent;
+     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         initializeview();
-         initializeviewSetListener();
+        initializeviewSetListener();
     }
 
     public void initializeview() {
@@ -60,11 +61,13 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
         }else{
               this.userController =new UserController();
 
+              this.hairServiceController =new HairServiceController();
+
+              this.hairServiceController.getModelAllhairInformantion();
+
               this.userController.checkUserAccountPassword(this.passwordText,this.emailText);
 
               checkDataArraivedOrNot();
-
-
 
         }
     }
@@ -75,12 +78,10 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
             @Override
             public void run() {
 
-                while (userController.getuserModelpasswordAndEmailCorrectorNot()==null ) {
-                    System.out.println("tony"+userController.getuserModelpasswordAndEmailCorrectorNot());
-                }
+                while (userController.getuserModelpasswordAndEmailCorrectorNot()==null ||hairServiceController.getModelDBbhairServiceMap()==null) {
+                 }
 
-                System.out.println("finalllyHelp"+userController.getuserModelpasswordAndEmailCorrectorNot());
-                userloginCorrect(userController.getuserModelpasswordAndEmailCorrectorNot());
+                 userloginCorrect(userController.getuserModelpasswordAndEmailCorrectorNot());
             }
         });
         t1.start();
@@ -88,16 +89,16 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
 
     public void userloginCorrect(Boolean correctOrNot){
         if(correctOrNot.equals(true)){
-             changeMainPage();
+              changeMainPage();
         }
     }
 
 
     public void changeMainPage(){
-        System.out.println("arrived");
-        Intent intent =new Intent(this, MainActivity.class);
-        LoginActivity.this.startActivity(intent);
+          intent =new Intent(this, MainActivity.class);
+           LoginActivity.this.startActivity(intent);
     }
+
 
     public void onClick(View view) {
         switch (view.getId()) {

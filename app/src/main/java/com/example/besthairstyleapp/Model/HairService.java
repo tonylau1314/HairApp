@@ -38,15 +38,15 @@ public class HairService extends Dbsetting {
 
     private Map<String,Object> getDBbhairServiceMap= new HashMap<String, Object>();
 
-    private Map<Integer, Map<String, Object>>hairCuttingMap = new HashMap<Integer,Map<String, Object>>();
+    private static Map<Integer, Map<String, Object>>hairCuttingMap = new HashMap<Integer,Map<String, Object>>();
 
-    private Map<Integer, Map<String, Object>>hairColoringMap = new HashMap<Integer,Map<String, Object>>();
+    private static Map<Integer, Map<String, Object>>hairColoringMap = new HashMap<Integer,Map<String, Object>>();
 
-    private Map<Integer, Map<String, Object>>hairShampooMap = new HashMap<Integer,Map<String, Object>>();
+    private static Map<Integer, Map<String, Object>>hairShampooMap = new HashMap<Integer,Map<String, Object>>();
 
-    private Map<Integer, Map<String, Object>>hairPermMap = new HashMap<Integer,Map<String, Object>>();
+    private static Map<Integer, Map<String, Object>>hairPermMap = new HashMap<Integer,Map<String, Object>>();
 
-    private Map<Integer, Map<String, Object>>hairPackageMap = new HashMap<Integer,Map<String, Object>>();
+    private static Map<Integer, Map<String, Object>>hairPackageMap = new HashMap<Integer,Map<String, Object>>();
 
 
 
@@ -92,6 +92,8 @@ public class HairService extends Dbsetting {
 
     final String hourTitle = "UploadHours";
 
+    final String userNameTitle = "UserName";
+
     private String postId;
 
     Uri mImageUri;
@@ -120,14 +122,15 @@ public class HairService extends Dbsetting {
 
     private String userInputhairtype;
 
-    private String userInputcountrystyle;
+    private String userInputcountryStyle;
+
+    private String userInputUserName;
 
     JSONArray jArray;
 
     private String[] countryStyle ={"Korea style","Americal style","China Style"};
 
     private String postNewYear[]={"2018","2017","2016"};
-
 
     public HairService() {
     }
@@ -155,9 +158,33 @@ public class HairService extends Dbsetting {
         this.counter = counter;
     }
 
+    public void setHairCuttingMap (Map<Integer, Map<String, Object>> hairCuttingMap){
+        System.out.println("setHairCuttingMap"+hairCuttingMap);
+
+        this.hairCuttingMap = hairCuttingMap;
+        System.out.println("setHairCuttingMapfunction"+gethairCuttingMap());
+
+    }
+
+    public void sethairColoringMap (Map<Integer, Map<String, Object>> hairColoringMap){
+        this.hairColoringMap=hairColoringMap;
+    }
+
+    public void sethairShampooMap (Map<Integer, Map<String, Object>>  hairShampooMap){
+        this.hairShampooMap=hairShampooMap;
+    }
+
+    public void sethairPermMap (Map<Integer, Map<String, Object>>  hairPermMap){
+        this.hairPermMap= hairPermMap;
+    }
+
+    public void sethairPackageMap (Map<Integer, Map<String, Object>>  hairPackageMap){
+        this.hairPackageMap= hairPackageMap;
+    }
+
     public Map<Integer, Map<String, Object>> gethairCuttingMap(){
 
-        System.out.println("TonyCheck123"+this.hairCuttingMap);
+        System.out.println("debug_paul: "+ this.hairCuttingMap);
 
         return this.hairCuttingMap;
     }
@@ -184,6 +211,10 @@ public class HairService extends Dbsetting {
         return this.hairServiceMap;
     }
 
+    public Map<String,Object> getDBbhairServiceMap(){
+        return this.getDBbhairServiceMap;
+    }
+
     public void insertHairServiceInformantion() {
 
         updateID();
@@ -196,6 +227,8 @@ public class HairService extends Dbsetting {
         this.postId=String.valueOf(counter);
 
         hairServiceMap.put(this.postIDTitle, postId);
+
+        hairServiceMap.put(this.userNameTitle, this.userInputUserName);
 
         hairServiceMap.put(this.emailTitle, this.userInputemail);
 
@@ -215,23 +248,24 @@ public class HairService extends Dbsetting {
 
         hairServiceMap.put(this.priceTitle, this.userInputprice);
 
-        hairServiceMap.put(this.hairTypeTitle,this.hairTypeTitle);
+        hairServiceMap.put(this.hairTypeTitle,this.userInputhairtype);
 
-        hairServiceMap.put(this.countryStyleTitle, this.userInputcountrystyle);
+        hairServiceMap.put(this.countryStyleTitle, this.userInputcountryStyle);
 
         //  hairServiceMap.put(this.commentIDTitle,c);
-
+        System.out.println("aasss");
         db.collection(collectionName).document(this.postId).set(hairServiceMap);
     }
 
-    public void uploadHairSerivceData(String email, String hairName, String data, String image, String spendTime, String price, String hairtype, String countrystyle){
+    public void uploadHairSerivceData(String email,String userName,String hairName,String data,String image,String spendTime,String price,String hairtype,String countrystyle){
         userInputemail=email;
         userInputhairName=hairName;
+        userInputUserName=userName;
         userInputimage=image;
         userInputspendTime=spendTime;
         userInputprice=price;
         userInputhairtype=hairtype;
-        userInputcountrystyle=countrystyle;
+        userInputcountryStyle=countrystyle;
         updateID();
         checkIDArraivedOrNot();
     }
@@ -324,7 +358,7 @@ public class HairService extends Dbsetting {
                                 try {
                                     HairService.this.getDBbhairServiceMap = document.getData();
 
-                                    HairService.this.gethairtype = getDBbhairServiceMap.get("Email").toString();
+                                    HairService.this.gethairtype = getDBbhairServiceMap.get("Hair Type").toString();
 
                                     System.out.println("check123123"+HairService.this.gethairtype);
 
@@ -363,29 +397,32 @@ public class HairService extends Dbsetting {
 
     private void typeFilter (){
         switch (HairService.this.gethairtype) {
+
             case "Hair cutting":
-                hairCuttingMap.put(++cuttingKeyCounter,getDBbhairServiceMap);
+                hairCuttingMap.put(cuttingKeyCounter++,getDBbhairServiceMap);
 
                 System.out.println("typeFilter"+getDBbhairServiceMap);
 
                 break;
 
             case "Hair coloring":
-                hairColoringMap.put(++coloringKeyCounter,getDBbhairServiceMap);
+                hairColoringMap.put(coloringKeyCounter++,getDBbhairServiceMap);
                 break;
 
             case "Hair shampoo":
-                hairShampooMap.put(++hairShampooCounter,getDBbhairServiceMap);
+                hairShampooMap.put(hairShampooCounter++,getDBbhairServiceMap);
                 break;
 
             case "Hair perm":
-                hairPermMap.put(++hairPermCounter,getDBbhairServiceMap);
+                hairPermMap.put(hairPermCounter++,getDBbhairServiceMap);
                 break;
 
             case "Hair Package":
-                hairPackageMap.put(++hairPackageCounter,getDBbhairServiceMap);
+                hairPackageMap.put(hairPackageCounter++,getDBbhairServiceMap);
                 break;
         }
+        System.out.println("typeFilter123"+getDBbhairServiceMap);
+
     }
 
 

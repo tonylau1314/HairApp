@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.besthairstyleapp.Controller.HairServiceController;
 import com.example.besthairstyleapp.R;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -37,7 +38,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
     HairServiceController hairServiceController;
 
-    Map<Integer,Map<String, Object>> postNews;
+    Map<Integer,Map<String, Object>> postNews =new HashMap<Integer,Map<String, Object>>() ;
     public RecycleViewAdapter(){
 
     }
@@ -78,9 +79,8 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         switch (layout){
             case R.layout.post_informantion_layout:
                 holder.postNewUserName.setText(postNews.get(position).get("Email").toString());
-                System.out.println("fastCheck"+postNews.get(position).get("Email").toString());
-           //     holder.postNewUsericon.setImageResource(postNewUserIcon[position]);
-            //    holder.postNewTime.setText(postNewsTime[position]);
+            //    holder.postNewUsericon.setImageResource(postNewUserIcon[position]);
+                holder.postNewTime.setText(postNews.get(position).get("UploadHours").toString());
 
 
             break;
@@ -115,12 +115,13 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     public int getItemCount() {
         switch (layout){
             case R.layout.post_informantion_layout:
-                this.getCountNumber=postNewuserName.length;
+                 this.getCountNumber=postNews.size();
              break;
+
             case R.layout.fliter_list_view:
                this.getCountNumber=countryStyle.length;
-
                 break;
+
             case R.layout.fliter_year_list_view:
                 this.getCountNumber=postNewYear.length;
                 break;

@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class HairServiceController {
-    private HairService model;
+    private HairService model = new HairService();
     private WatchedHairActivity view;
     private RecycleViewAdapter RecycleViewAdapter;
     Context context;
@@ -23,7 +23,7 @@ public class HairServiceController {
     Activity activity;
     RecycleViewAdapter recycleViewAdapter;
     private int onclickTypenumber;
-    private Map<Integer, Map<String, Object>>postNewMap = new HashMap<Integer,Map<String, Object>>();
+    private static Map<Integer, Map<String, Object>>postNewMap = new HashMap<Integer,Map<String, Object>>();
 
     public HairServiceController(Context context, WatchedHairActivity view,Activity activity){
         this.model = new HairService();
@@ -42,7 +42,7 @@ public class HairServiceController {
     }
 
     public HairServiceController(){
-        this.model = new HairService();
+
     }
 
 
@@ -57,7 +57,7 @@ public class HairServiceController {
 
 
     public Map<Integer, Map<String, Object>> getModelgethairCuttingMap(){
-        System.out.println("TonyCHeck"+model.gethairCuttingMap());
+        System.out.println("getModelgethairCuttingMap"+ model.gethairCuttingMap());
 
         return model.gethairCuttingMap();
     }
@@ -76,10 +76,39 @@ public class HairServiceController {
         return model.gethairPermMap();
     }
 
+    public void setModelHairCuttingMap(Map<Integer, Map<String, Object>> hairCuttingMap){
+        System.out.println("ControllersetHairCuttingMap"+hairCuttingMap);
+
+        model.setHairCuttingMap(hairCuttingMap);
+        System.out.println("Tonyyyyyy"+getModelgethairCuttingMap());
+        System.out.println("Tonyyyyyy123"+model.gethairCuttingMap());
+
+    }
+
+
+    public void setModelhairColoringMap(Map<Integer, Map<String, Object>> hairColoringMap){
+        model.sethairColoringMap(hairColoringMap);
+    }
+
+
+    public void setModelhairShampooMap(Map<Integer, Map<String, Object>> hairShampooMap){
+        model.sethairShampooMap(hairShampooMap);
+    }
+
+
+    public void setModelhairPermMap(Map<Integer, Map<String, Object>> hairPermMap){
+        model.sethairPermMap(hairPermMap);
+    }
+
+
+    public void setModelhairPackageMap(Map<Integer, Map<String, Object>> hairPackageMap){
+        model.sethairPackageMap(hairPackageMap);
+    }
 
     public Map<Integer, Map<String, Object>> getModelhairPackageMap(){
         return model.gethairPackageMap();
     }
+
 
     public void SetonclickTypenumber(int onclickTypenumber){
         this.onclickTypenumber =onclickTypenumber;
@@ -94,10 +123,19 @@ public class HairServiceController {
         model.getAllhairInformantion();
     }
 
+    public  Map<String,Object>  getModelDBbhairServiceMap(){
+        return model.getDBbhairServiceMap();
+    }
+
+    public Map<Integer, Map<String, Object>> getPostNewMap(){
+        return postNewMap;
+    }
+
     public void checkDisplaySwitchTypeNew(){
         switch (onclickTypenumber) {
             case 0:
-                postNewMap=getModelgethairCuttingMap();
+                System.out.println("checkHairController"+ getModelgethairCuttingMap());
+                this.postNewMap=getModelgethairCuttingMap();
              break;
 
             case 1:
@@ -135,12 +173,9 @@ public class HairServiceController {
 
     public void displayNews(){
         RecyclerView recycleview =(RecyclerView)this.activity.findViewById(R.id.recycle_view);
-        System.out.println("checkTony"+postNewMap);
         recycleViewAdapter = new RecycleViewAdapter(R.layout.post_informantion_layout,this.context,postNewMap);
         recycleview.setAdapter(recycleViewAdapter);
         recycleview.setLayoutManager(new LinearLayoutManager(this.context));
-
-
     }
 
  /*   public void displayNews(){

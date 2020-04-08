@@ -26,6 +26,9 @@ public class HairServiceController {
     private int onclickTypenumber;
     private static Map<Integer, Map<String, Object>>postNewMap = new HashMap<Integer,Map<String, Object>>();
 
+    private static Map<Integer,Map<String, Object>> recordUserInterestService =new HashMap<Integer,Map<String, Object>>() ;
+
+
     public HairServiceController(Context context, WatchedHairActivity view,Activity activity){
         this.model = new HairService();
         this.view=view;
@@ -43,6 +46,11 @@ public class HairServiceController {
 
     public HairServiceController(){
 
+    }
+
+
+    public static Map<Integer, Map<String, Object>> getRecordUserInterestService() {
+        return recordUserInterestService;
     }
 
 

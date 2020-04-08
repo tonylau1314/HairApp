@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.besthairstyleapp.Controller.HairServiceController;
 import com.example.besthairstyleapp.R;
 
 import java.util.HashMap;
@@ -36,6 +37,12 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     boolean onClickChange;
 
     static RecyclerView.Adapter postinformantionlayoutAdapter ;
+
+    int onClickNumberCountryStyle;
+
+    HairServiceController hairServiceController= new HairServiceController();
+
+    private int onclickplusNumber;
 
     public RecycleViewAdapter(){
 
@@ -78,11 +85,19 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
         switch (layout){
             case R.layout.post_informantion_layout:
-                System.out.println("OnBindViewHolder"+postNews.get(position).get("Email").toString());
-                holder.postNewUserName.setText(postNews.get(position).get("Email").toString());
+                 holder.postNewUserName.setText(postNews.get(position).get("Email").toString());
             //    holder.postNewUsericon.setImageResource(postNewUserIcon[position]);
                 holder.postNewTime.setText(postNews.get(position).get("UploadHours").toString());
+
+                holder.plusIcon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        recordUserInterestService(position);
+                    }
+                });
+
                 setPostInformantionLayoutAdapter(this);
+
             break;
 
             case R.layout.fliter_list_view:
@@ -90,10 +105,9 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
                 holder.fliter_item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        setCountryStyleOnClickNumber(position);
                         checkWhichStylebtnClicked();
                         postNewsFilter(filterYearTitle,hairStyleTitle);
-
                     }
                 });
             break;
@@ -155,20 +169,18 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
     public void postNewsFilter(String filterYearTitle,String filterCountryStyle){
         removeitem(filterYearTitle,filterCountryStyle);
-
     }
 
     public void removeitem(String filterYearTitle,String filterCountryStyle){
         System.out.println("tony1234"+filterYearTitle);
         postNews.putAll(oldNews);
-
         for (int counter = 0; counter < postNews.size(); counter++) {
                 if (filterYearTitle.equals(postNews.get(counter).get("UpLoadYear").toString())){
                     System.out.println("ifCondition");
                     postNews.remove(counter);
                     this.postinformantionlayoutAdapter.notifyItemRemoved(counter);
 
-                }else { 
+                }else {
                     System.out.println("checkPostNews"+postNews);
                     this.postinformantionlayoutAdapter.notifyItemRemoved(counter);
                     this.postinformantionlayoutAdapter.notifyDataSetChanged();
@@ -178,12 +190,16 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
     }
 
+    public void recordUserInterestService(int userInterestService){
+        onclickplusNumber++;
+        hairServiceController.getRecordUserInterestService().put(userInterestService,postNews.get(userInterestService));
+     }
+
     @Override
     public int getItemCount() {
         switch (layout){
             case R.layout.post_informantion_layout:
-                System.out.println("getItemCount"+postNews.size());
-                 this.getCountNumber=postNews.size();
+                  this.getCountNumber=postNews.size();
 
              break;
 
@@ -208,6 +224,13 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     }
 
 
+    public void setCountryStyleOnClickNumber(int onClickNumberCountryStyle){
+        this.onClickNumberCountryStyle=onClickNumberCountryStyle;
+    }
+
+    public int setCountryStyleOnClickNumber(){
+        return this.onClickNumberCountryStyle;
+    }
 
 
 

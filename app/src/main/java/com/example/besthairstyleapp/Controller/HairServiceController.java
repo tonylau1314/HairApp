@@ -56,9 +56,7 @@ public class HairServiceController {
     }
 
 
-    public Map<Integer, Map<String, Object>> getModelgethairCuttingMap(){
-        System.out.println("getModelgethairCuttingMap"+ model.gethairCuttingMap());
-
+    public Map<Integer, Map<String, Object>> getModelgethairCuttingMap(){ 
         return model.gethairCuttingMap();
     }
 
@@ -82,12 +80,7 @@ public class HairServiceController {
     }
 
     public void setModelHairCuttingMap(Map<Integer, Map<String, Object>> hairCuttingMap){
-        System.out.println("ControllersetHairCuttingMap"+hairCuttingMap);
-
         model.setHairCuttingMap(hairCuttingMap);
-        System.out.println("Tonyyyyyy"+getModelgethairCuttingMap());
-        System.out.println("Tonyyyyyy123"+model.gethairCuttingMap());
-
     }
 
 
@@ -121,7 +114,6 @@ public class HairServiceController {
     }
 
     public Object getpostNewsRecycleViewAdapter(){
-
         return postNewsRecycleViewAdapter;
     }
 
@@ -183,6 +175,7 @@ public class HairServiceController {
 
     public void displayNews(){
         RecyclerView recycleview =(RecyclerView)this.activity.findViewById(R.id.recycle_view);
+        System.out.println("checkControllerpostNewMap"+postNewMap);
         postNewsRecycleViewAdapter = new RecycleViewAdapter(R.layout.post_informantion_layout,this.context,postNewMap);
         recycleview.setAdapter(postNewsRecycleViewAdapter);
         recycleview.setLayoutManager(new LinearLayoutManager(this.context));

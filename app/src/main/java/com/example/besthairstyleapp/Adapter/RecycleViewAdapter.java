@@ -22,10 +22,6 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     @NonNull
 
     private Context context;
-    int postNewUserIcon[];
-    String postNewuserName[];
-    String postNewsTime[];
-    int HairImg[];
     String[] countryStyle ;
     String postNewYear[];
     int layout;
@@ -39,6 +35,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     HairServiceController hairServiceController;
 
     static Map<Integer,Map<String, Object>> postNews =new HashMap<Integer,Map<String, Object>>() ;
+    static Map<Integer,Map<String, Object>> oldpostNews =new HashMap<Integer,Map<String, Object>>() ;
 
     boolean onClickChange;
 
@@ -59,6 +56,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         this.layout=layout;
         this.context=context;
         this.postNewYear=postNewYear;
+
     }
 
 
@@ -67,7 +65,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         this.layout=layout;
         this.context=context;
         this.postNews=postNews;
-    }
+     }
 
 
 
@@ -163,13 +161,13 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     public void removeitem(String filterYearTitle){
          for (int counter = 0; counter < postNews.size(); counter++) {
              if (filterYearTitle.equals(postNews.get(counter).get("UpLoadYear").toString())){
-                postNews.remove(counter);
+                this.postNews.remove(counter);
+                System.out.println("CheckWhcihRemove"+counter);
                 this.postinformantionlayoutAdapter.notifyItemRemoved(counter);
 
             }
          }
-
-    }
+     }
 
     @Override
     public int getItemCount() {

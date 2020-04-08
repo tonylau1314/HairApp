@@ -159,11 +159,7 @@ public class HairService extends Dbsetting {
     }
 
     public void setHairCuttingMap (Map<Integer, Map<String, Object>> hairCuttingMap){
-        System.out.println("setHairCuttingMap"+hairCuttingMap);
-
         this.hairCuttingMap = hairCuttingMap;
-        System.out.println("setHairCuttingMapfunction"+gethairCuttingMap());
-
     }
 
     public void sethairColoringMap (Map<Integer, Map<String, Object>> hairColoringMap){

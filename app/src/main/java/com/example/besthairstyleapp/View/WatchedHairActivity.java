@@ -20,8 +20,7 @@ public class WatchedHairActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.news_page);
 
-        System.out.println("fastCheck"+hairService.gethairCuttingMap().get(0).get("UserName"));
-
+//        System.out.println("fastCheck"+hairService.gethairCuttingMap().get(0).get("UserName"));
         getIntents();
         setonclicknumber();
         displayCountryStyleFliter();

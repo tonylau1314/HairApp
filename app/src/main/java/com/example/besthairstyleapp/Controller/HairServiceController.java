@@ -17,11 +17,12 @@ import java.util.Map;
 public class HairServiceController {
     private HairService model = new HairService();
     private WatchedHairActivity view;
-    private RecycleViewAdapter RecycleViewAdapter;
-    Context context;
+     Context context;
     int layout;
     Activity activity;
     RecycleViewAdapter recycleViewAdapter;
+    public RecycleViewAdapter postNewsRecycleViewAdapter;
+
     private int onclickTypenumber;
     private static Map<Integer, Map<String, Object>>postNewMap = new HashMap<Integer,Map<String, Object>>();
 
@@ -36,8 +37,7 @@ public class HairServiceController {
     public HairServiceController(int layout, Context context, RecycleViewAdapter RecycleViewAdapter, HairService model, WatchedHairActivity view){
         this.model=model;
         this.view=view;
-        this.RecycleViewAdapter=RecycleViewAdapter;
-        this.context=context;
+         this.context=context;
         this.layout=layout;
     }
 
@@ -69,6 +69,11 @@ public class HairServiceController {
 
     public Map<Integer, Map<String, Object>> getModelhairShampooMap(){
         return model.gethairShampooMap();
+    }
+
+
+    public Map<Integer, Map<String, Object>> getModelpostNewMap(){
+        return postNewMap;
     }
 
 
@@ -113,6 +118,11 @@ public class HairServiceController {
     public void SetonclickTypenumber(int onclickTypenumber){
         this.onclickTypenumber =onclickTypenumber;
         checkDisplaySwitchTypeNew();
+    }
+
+    public Object getpostNewsRecycleViewAdapter(){
+
+        return postNewsRecycleViewAdapter;
     }
 
     public Map<String,Object> getModelhairServiceMap(){
@@ -173,47 +183,10 @@ public class HairServiceController {
 
     public void displayNews(){
         RecyclerView recycleview =(RecyclerView)this.activity.findViewById(R.id.recycle_view);
-        recycleViewAdapter = new RecycleViewAdapter(R.layout.post_informantion_layout,this.context,postNewMap);
-        recycleview.setAdapter(recycleViewAdapter);
+        postNewsRecycleViewAdapter = new RecycleViewAdapter(R.layout.post_informantion_layout,this.context,postNewMap);
+        recycleview.setAdapter(postNewsRecycleViewAdapter);
         recycleview.setLayoutManager(new LinearLayoutManager(this.context));
     }
-
- /*   public void displayNews(){
-        RecyclerView recycleview =(RecyclerView)this.activity.findViewById(R.id.recycle_view);
-
-        recycleViewAdapter = new RecycleViewAdapter(R.layout.post_informantion_layout,this.context,getHairServiceUserIcon(),getHairServiceStylist(),getHairServicePostNewsTime(),getHairServiceHairImg());
-
-
-        recycleview.setAdapter(recycleViewAdapter);
-        recycleview.setLayoutManager(new LinearLayoutManager(this.context));
-
-
-    }
-*/
-    //clear old data and add new data
-  /*  public void updateData(RecycleViewAdapter recycleViewAdapter){
-        HairServiceController hairServiceController=new HairServiceController();
-
-        System.out.println("check"+hairServiceController.getHairServiceStylist());
-        this.postNewuserName=hairServiceController.getHairServiceStylist();
-
-
-        System.out.println("aaaa"+newList);
-        DiffUtilCallback diffUtilCallback = new DiffUtilCallback(postNewuserName,newList);
-        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffUtilCallback);
-        // postNewuserName= new String[2];
-         String postNewuserName[] = new String[newList.length];
-
-        for (int counter = 0; counter <newList.length; counter++) {
-            postNewuserName[counter]=newList[counter];
-        }
-
-        //      dataSource.addAll(newList);
-        System.out.println("checkNew"+newList);
-
-        diffResult.dispatchUpdatesTo(hairServiceController.recycleViewAdapter);
-    }
-*/
 
 
 }

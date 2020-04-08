@@ -363,6 +363,7 @@ public class HairService extends Dbsetting {
                                     System.out.println("check123123"+HairService.this.gethairtype);
 
                                     typeFilter ();
+
                                 } catch(NullPointerException e) {
 
                                 }
@@ -400,9 +401,7 @@ public class HairService extends Dbsetting {
 
             case "Hair cutting":
                 hairCuttingMap.put(cuttingKeyCounter++,getDBbhairServiceMap);
-
                 System.out.println("typeFilter"+getDBbhairServiceMap);
-
                 break;
 
             case "Hair coloring":

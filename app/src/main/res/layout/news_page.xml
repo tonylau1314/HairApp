@@ -32,4 +32,4 @@
         >
         <include layout="@layout/nav_bar"></include>
     </RelativeLayout>
-</LinearLayout>
+ </LinearLayout>

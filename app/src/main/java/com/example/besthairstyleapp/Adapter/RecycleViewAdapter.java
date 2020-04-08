@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.besthairstyleapp.Controller.HairServiceController;
 import com.example.besthairstyleapp.R;
@@ -16,7 +17,6 @@ import com.example.besthairstyleapp.R;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.MyViewHolder>  implements View.OnClickListener {
     @NonNull
@@ -38,7 +38,11 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
     HairServiceController hairServiceController;
 
-    Map<Integer,Map<String, Object>> postNews =new HashMap<Integer,Map<String, Object>>() ;
+    static Map<Integer,Map<String, Object>> postNews =new HashMap<Integer,Map<String, Object>>() ;
+
+    boolean onClickChange;
+
+    static RecyclerView.Adapter postinformantionlayoutAdapter ;
     public RecycleViewAdapter(){
 
     }
@@ -78,11 +82,11 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
         switch (layout){
             case R.layout.post_informantion_layout:
+                System.out.println("OnBindViewHolder"+postNews.get(position).get("Email").toString());
                 holder.postNewUserName.setText(postNews.get(position).get("Email").toString());
             //    holder.postNewUsericon.setImageResource(postNewUserIcon[position]);
                 holder.postNewTime.setText(postNews.get(position).get("UploadHours").toString());
-
-
+                setPostInformantionLayoutAdapter(this);
             break;
 
             case R.layout.fliter_list_view:
@@ -93,21 +97,77 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
                 holder.fliter_year_item.setText(postNewYear[position]);
 
-                holder.fliter_year_item.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    System.out.println("arrivedTony");
-
-                    String update[] = new String[10];
-                    for (int i=0; i<3; i++)
-                     update[i]=(UUID.randomUUID().toString());
-                    HairServiceController hairServiceController=new HairServiceController();
-
-        //            hairServiceController.updateData(update);
-                     setOnClickNumber(position);
-                }
-            });
+                holder.fliter_year_item.setOnClickListener(this);
         }
+
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.fliter_year_item:
+                checkWhichFilterYearbtnClicked();
+                postNewsFilter(filterYearTitle);
+                break;
+
+            case R.id.fliter_item:
+                checkWhichStylebtnClicked();
+
+                break;
+
+        }
+    }
+    public void checkWhichStylebtnClicked(){
+        switch (getOnClickNumber()){
+            case 0:
+                this.hairStyleTitle="Korea style";
+                break;
+
+            case 1:
+                this.hairStyleTitle="Americal style";
+                break;
+
+            case 2:
+                this.hairStyleTitle="China style";
+                break;
+        }
+    }
+    public void checkWhichFilterYearbtnClicked(){
+        switch (getOnClickNumber()){
+            case 0:
+                this.filterYearTitle = "2018";
+                break;
+
+            case 1:
+                this.filterYearTitle = "2017";
+                break;
+
+            case 2:
+                this.filterYearTitle = "2016";
+                break;
+        }
+    }
+
+
+
+    public void setPostInformantionLayoutAdapter(RecyclerView.Adapter adapter){
+        postinformantionlayoutAdapter=adapter;
+        System.out.println("CheckNullOrNot123"+postinformantionlayoutAdapter);
+    }
+
+    public void postNewsFilter(String filterYearTitle){
+        removeitem(filterYearTitle);
+
+    }
+
+    public void removeitem(String filterYearTitle){
+         for (int counter = 0; counter < postNews.size(); counter++) {
+             if (filterYearTitle.equals(postNews.get(counter).get("UpLoadYear").toString())){
+                postNews.remove(counter);
+                this.postinformantionlayoutAdapter.notifyItemRemoved(counter);
+
+            }
+         }
 
     }
 
@@ -115,7 +175,9 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     public int getItemCount() {
         switch (layout){
             case R.layout.post_informantion_layout:
+                System.out.println("getItemCount"+postNews.size());
                  this.getCountNumber=postNews.size();
+
              break;
 
             case R.layout.fliter_list_view:
@@ -139,54 +201,6 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     }
 
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.fliter_year_item:
-                checkWhichFilterYearbtnClicked();
-
-                break;
-
-            case R.id.fliter_item:
-                checkWhichStylebtnClicked();
-
-                break;
-
-        }
-    }
-
-    public void checkWhichFilterYearbtnClicked(){
-        switch (getOnClickNumber()){
-            case 0:
-                this.filterYearTitle = "2018";
-            break;
-
-            case 1:
-                this.filterYearTitle = "2017";
-            break;
-
-            case 2:
-                this.filterYearTitle = "2016";
-                break;
-        }
-    }
-
-    public void checkWhichStylebtnClicked(){
-        switch (getOnClickNumber()){
-            case 0:
-                this.hairStyleTitle="Korea style";
-            break;
-
-            case 1:
-                this.hairStyleTitle="Americal style";
-            break;
-
-            case 2:
-                this.hairStyleTitle="China style";
-            break;
-        }
-    }
-
 
 
 
@@ -199,7 +213,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         ImageView postHairImage;
         TextView fliter_item;
         TextView fliter_year_item;
-
+        SwipeRefreshLayout refreshHairPost;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             postNewUsericon =(ImageView)itemView.findViewById(R.id.postNewUserIcon);
@@ -210,8 +224,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
             fliter_item=(TextView)itemView.findViewById(R.id.fliter_item);
             fliter_year_item=(TextView)itemView.findViewById(R.id.fliter_year_item);
 
-        }
-
+         }
 
     }
 

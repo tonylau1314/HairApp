@@ -11,14 +11,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.besthairstyleapp.Controller.HairServiceController;
 import com.example.besthairstyleapp.R;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.MyViewHolder>  implements View.OnClickListener {
+public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.MyViewHolder>  {
     @NonNull
 
     private Context context;
@@ -30,16 +28,15 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     String filterYearTitle;
     String hairStyleTitle;
 
-    List<String> dataSource;
-
-    HairServiceController hairServiceController;
-
     static Map<Integer,Map<String, Object>> postNews =new HashMap<Integer,Map<String, Object>>() ;
-    static Map<Integer,Map<String, Object>> oldpostNews =new HashMap<Integer,Map<String, Object>>() ;
+
+    static Map<Integer,Map<String, Object>> oldNews =new HashMap<Integer,Map<String, Object>>() ;
+
 
     boolean onClickChange;
 
     static RecyclerView.Adapter postinformantionlayoutAdapter ;
+
     public RecycleViewAdapter(){
 
     }
@@ -64,8 +61,9 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     public RecycleViewAdapter(int layout , Context context, Map<Integer, Map<String, Object>> postNews){
         this.layout=layout;
         this.context=context;
-        this.postNews=postNews;
-     }
+        this.postNews.putAll(postNews);
+        this.oldNews.putAll(postNews);
+    }
 
 
 
@@ -89,32 +87,34 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
             case R.layout.fliter_list_view:
                 holder.fliter_item.setText(countryStyle[position]);
+                holder.fliter_item.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        checkWhichStylebtnClicked();
+                        postNewsFilter(filterYearTitle,hairStyleTitle);
+
+                    }
+                });
             break;
 
             case R.layout.fliter_year_list_view:
 
                 holder.fliter_year_item.setText(postNewYear[position]);
 
-                holder.fliter_year_item.setOnClickListener(this);
+                holder.fliter_year_item.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        setOnClickNumber(position);
+                        System.out.println("checkPostion"+position);
+                        checkWhichFilterYearbtnClicked();
+                        postNewsFilter(filterYearTitle,hairStyleTitle);
+                    }
+                });
         }
 
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.fliter_year_item:
-                checkWhichFilterYearbtnClicked();
-                postNewsFilter(filterYearTitle);
-                break;
-
-            case R.id.fliter_item:
-                checkWhichStylebtnClicked();
-
-                break;
-
-        }
-    }
     public void checkWhichStylebtnClicked(){
         switch (getOnClickNumber()){
             case 0:
@@ -153,21 +153,30 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         System.out.println("CheckNullOrNot123"+postinformantionlayoutAdapter);
     }
 
-    public void postNewsFilter(String filterYearTitle){
-        removeitem(filterYearTitle);
+    public void postNewsFilter(String filterYearTitle,String filterCountryStyle){
+        removeitem(filterYearTitle,filterCountryStyle);
 
     }
 
-    public void removeitem(String filterYearTitle){
-         for (int counter = 0; counter < postNews.size(); counter++) {
-             if (filterYearTitle.equals(postNews.get(counter).get("UpLoadYear").toString())){
-                this.postNews.remove(counter);
-                System.out.println("CheckWhcihRemove"+counter);
-                this.postinformantionlayoutAdapter.notifyItemRemoved(counter);
+    public void removeitem(String filterYearTitle,String filterCountryStyle){
+        System.out.println("tony1234"+filterYearTitle);
+        postNews.putAll(oldNews);
 
+        for (int counter = 0; counter < postNews.size(); counter++) {
+                if (filterYearTitle.equals(postNews.get(counter).get("UpLoadYear").toString())){
+                    System.out.println("ifCondition");
+                    postNews.remove(counter);
+                    this.postinformantionlayoutAdapter.notifyItemRemoved(counter);
+
+                }else { 
+                    System.out.println("checkPostNews"+postNews);
+                    this.postinformantionlayoutAdapter.notifyItemRemoved(counter);
+                    this.postinformantionlayoutAdapter.notifyDataSetChanged();
+
+                }
             }
-         }
-     }
+
+    }
 
     @Override
     public int getItemCount() {

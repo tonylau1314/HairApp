@@ -56,7 +56,7 @@ public class HairServiceController {
     }
 
 
-    public Map<Integer, Map<String, Object>> getModelgethairCuttingMap(){ 
+    public Map<Integer, Map<String, Object>> getModelgethairCuttingMap(){
         return model.gethairCuttingMap();
     }
 
@@ -80,7 +80,7 @@ public class HairServiceController {
     }
 
     public void setModelHairCuttingMap(Map<Integer, Map<String, Object>> hairCuttingMap){
-        model.setHairCuttingMap(hairCuttingMap);
+       // model.setHairCuttingMap(hairCuttingMap);
     }
 
 

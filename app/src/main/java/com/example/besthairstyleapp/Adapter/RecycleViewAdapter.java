@@ -42,7 +42,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
     HairServiceController hairServiceController= new HairServiceController();
 
-    private int onclickplusNumber;
+    private static int onclickplusNumber;
 
     public RecycleViewAdapter(){
 
@@ -92,12 +92,11 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
                 holder.plusIcon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        System.out.println("recycleOnClick"+position);
                         recordUserInterestService(position);
                     }
                 });
-
                 setPostInformantionLayoutAdapter(this);
-
             break;
 
             case R.layout.fliter_list_view:
@@ -187,13 +186,13 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
                 }
             }
-
     }
 
-    public void recordUserInterestService(int userInterestService){
+    public void recordUserInterestService(int userInterestService) {
         onclickplusNumber++;
-        hairServiceController.getRecordUserInterestService().put(userInterestService,postNews.get(userInterestService));
-     }
+        hairServiceController.getPostNewMap().put(onclickplusNumber,postNews.get(userInterestService));
+        System.out.println("checkCheck"+hairServiceController.getPostNewMap());
+    }
 
     @Override
     public int getItemCount() {

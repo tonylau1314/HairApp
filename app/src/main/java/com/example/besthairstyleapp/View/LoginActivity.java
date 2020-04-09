@@ -25,11 +25,14 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
         UserController userController;
         HairServiceController hairServiceController;
         Intent intent;
-     @Override
+
+
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        initializeview();
+         initializeview();
         initializeviewSetListener();
     }
 

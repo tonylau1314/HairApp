@@ -144,8 +144,7 @@ public class HairServiceController {
     public void checkDisplaySwitchTypeNew(){
         switch (onclickTypenumber) {
             case 0:
-                System.out.println("checkHairController"+ getModelgethairCuttingMap());
-                this.postNewMap=getModelgethairCuttingMap();
+                 this.postNewMap=getModelgethairCuttingMap();
              break;
 
             case 1:

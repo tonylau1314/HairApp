@@ -219,7 +219,8 @@ public class User extends Dbsetting {
                         getpassword=userMap.get("Password").toString();
 
 
-                        if(getEmail().equals(getemail)||getPassword().equals(getpassword)){
+                        if(getEmail().equals(getemail)&& getPassword().equals(getpassword)){
+                            System.out.println("password"+password);
                             setpasswordAndEmailCorrectorNot(true);
 
                         }
